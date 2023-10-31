@@ -1,0 +1,106 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css");
+
+.newsletter-form {
+    background-color: #fff;
+    margin: 20px;
+    padding: 30px;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.newsletter-form h2 {
+    margin: 20px;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.newsletter-form p {
+    margin: 20px;
+    padding: 10px;
+}
+
+.email-input {
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.subscribe-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.subscribe-button:hover {
+    background-color: #FF8E0A;
+}
+
+.footer {
+    position: relative;
+    width: 100%;
+    background: #ffffff;
+    min-height: 100px;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.menu {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+.menu__item {
+    list-style: none;
+}
+
+
+.menu__link {
+    font-size: 1.2rem;
+    color: #010101;
+    margin: 0 10px;
+    display: inline-block;
+    transition: 0.5s;
+    text-decoration: none;
+    opacity: 0.75;
+    font-weight: 300;
+}
+
+.menu__link:hover {
+    opacity: 1;
+}
+
+.footer p {
+    color: #161616;
+    margin: 15px 0 10px 0;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+i {
+    font-size: 2rem;
+    color: #040404;
+    margin: 0 10px;
+    display: inline-block;
+    transition: 0.5s;
+
+
+}
+
+i:hover {
+    transform: translateY(-10px);
+    color: #FF8E0A;
+}

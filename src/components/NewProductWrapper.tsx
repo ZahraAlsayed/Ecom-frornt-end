@@ -1,9 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { ProductForm } from './ProductForm'
+import { ProductForm } from './admin-components/ProductForm'
 import { addProduct, Product } from '../redux/slices/products/productSlice'
 import { AppDispatch } from '../redux/store'
+import Header from './Header'
 
 const initialProductState: Product = {
   id: 0,
@@ -12,7 +14,8 @@ const initialProductState: Product = {
   description: '',
   categories: [],
   variants: [],
-  sizes: []
+  sizes: [],
+  prise: 0
 }
 
 export const NewProductWrapper = () => {
@@ -52,6 +55,8 @@ export const NewProductWrapper = () => {
 
   return (
     <div>
+
+      <Header />
       <h3 className="text-2xl font-bold">Add a new product</h3>
       <ProductForm handleSubmit={handleSubmit} handleChange={handleChange} product={product} />
     </div>

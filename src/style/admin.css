@@ -1,0 +1,30 @@
+.dashboard{
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+}
+.container {
+ 
+   display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.contant {
+  flex: 1;
+}
+.sidebar {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: auto;
+  background-color: #ffffff;
+  color: #5a5858;
+ 
+  
+  
+}
+.content, .sidebar ,.list {
+  align-self: stretch;
+}

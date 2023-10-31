@@ -1,0 +1,26 @@
+.search-bar {
+    display: flex;
+    margin: 20px 0;
+    margin-left: 20%;
+
+}
+
+.search-bar input {
+    flex: 1;
+    width: 45%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 30px;
+}
+.sort-dropdown{
+    padding: 10px;
+    margin-right: 30px;
+}
+.slider{
+    padding: 40px;
+    margin-left:30px ;
+    align-content: center;
+}
+.slider Slider image{
+ align-content: center;
+}

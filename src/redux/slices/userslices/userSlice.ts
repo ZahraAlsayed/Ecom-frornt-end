@@ -39,6 +39,10 @@ export const userSlice = createSlice({
         login: (state, action) => {
             state.isLoggedIn = true
             state.userData=action.payload
+        },
+        deleteUser:(state, action) =>{
+            const filterUsre= state.items.filter((user) => user.id != action.payload)
+            state.items= filterUsre
         }
     },
     extraReducers: (builder) => {
@@ -59,6 +63,6 @@ export const userSlice = createSlice({
     }
 })
 //export const { removeProduct, addProduct, productsRequest, productsSuccess , getSreachResult ,sortProducts} = userSlice.actions
-export const { login } = userSlice.actions
+export const { login ,deleteUser} = userSlice.actions
 
 export default userSlice.reducer

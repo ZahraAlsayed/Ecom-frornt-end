@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+
+import api from '../../../api'
 
 export type Product = {
   id: number
@@ -9,13 +11,14 @@ export type Product = {
   categories: number[]
   variants: string[]
   sizes: string[]
+  prise : number
 }
 
 export type ProductState = {
   items: Product[]
   error: null | string
   isLoading: boolean
-  searchingThrem: string
+   searchingTerm: string
   singleProduct: Product 
 
 }
@@ -24,9 +27,14 @@ const initialState: ProductState = {
   items: [],
   error: null,
   isLoading: false,
-  searchingThrem: "",
+   searchingTerm: "",
   singleProduct: {} as Product 
 }
+export const fetchProducts = createAsyncThunk('items/fetchProducst', async () => {
+    const res = await api.get('/mock/e-commerce/products.json');
+    return res.data;
+    
+});
 
 export const productSlice = createSlice({
   name: 'product',
@@ -48,7 +56,7 @@ export const productSlice = createSlice({
       state.items = filteredItems
     },
     getSreachResult:(state ,action)=>{
-      state.searchingThrem=action.payload;
+      state. searchingTerm =action.payload;
     },
     sortProducts:(state ,action)=>{
       const sortingInput =action.payload;
@@ -59,11 +67,18 @@ export const productSlice = createSlice({
         state.items.sort((a,b)=>a.id -b.id )
       }
     },
+    findProductBId: (state, action) => {
+            const id=action.payload
+            const productFound = state.items.find((product) => product.id == id)
+            if (productFound) {
+                state.singleProduct = productFound
+            }
+        },
     
     
   }
 })
 export const { removeProduct, addProduct, productsRequest, productsSuccess ,getSreachResult,
-  sortProducts } = productSlice.actions
+  sortProducts ,findProductBId} = productSlice.actions
 
 export default productSlice.reducer

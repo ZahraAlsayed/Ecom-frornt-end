@@ -6,7 +6,7 @@ export type Order = {
     id: number,
     productId: number,
     userId: number,
-    purchasedAt: Date | string
+    purchasedAt: string
 }
 
 export type OrderState = {

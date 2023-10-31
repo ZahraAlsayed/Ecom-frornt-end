@@ -56,3 +56,4 @@ export function ProductsManager() {
     </div>
   )
 }
+export default ProductsManager
