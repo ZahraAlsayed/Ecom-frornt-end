@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 import api from '../../../api'
 
@@ -55,6 +55,14 @@ export const productSlice = createSlice({
       const filteredItems = state.items.filter((product) => product.id !== action.payload.productId)
       state.items = filteredItems
     },
+    updateProduct: (state, action:  PayloadAction<Product>) => {
+       const index = state.items.findIndex((product) => product.id === action.payload.id);
+
+      if (index !== -1) {
+        state.items[index] = action.payload;
+      }
+
+    },
     getSreachResult:(state ,action)=>{
       state. searchingTerm =action.payload;
     },
@@ -76,9 +84,24 @@ export const productSlice = createSlice({
         },
     
     
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.items = action.payload
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.error.message || 'Failed to fetch Products.'
+      })
   }
 })
 export const { removeProduct, addProduct, productsRequest, productsSuccess ,getSreachResult,
-  sortProducts ,findProductBId} = productSlice.actions
+  sortProducts ,findProductBId,updateProduct} = productSlice.actions
 
 export default productSlice.reducer

@@ -11,8 +11,13 @@ const Login = () => {
     const dispatch = useDispatch<AppDispatch>()
     const state = useSelector((state: RootState) => state)
     const users = state.users
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
+    const handleNavigation = () => {
+        navigate("/");
+
+    };
+
     const [user, setUser] = useState({
         fristName: '',
         LastName: '',
@@ -103,7 +108,7 @@ const Login = () => {
                     <label htmlFor="password" >Password</label>
                 </div>
                 <div className="pass">Forgot Password?</div>
-                <button type="submit" value="singup" >Sing UP</button>
+                <button type="submit" value="singup" onClick={handleNavigation}>Sing UP</button>
                 <div className="signuplink">
                     Already registered ? <Link to=''>Login</Link>
                 </div>

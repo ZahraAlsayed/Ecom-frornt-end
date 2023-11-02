@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -19,6 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { AppDispatch, RootState } from '../../redux/store'
 import {
+    Product,
     productsRequest,
     productsSuccess,
     removeProduct,
@@ -32,35 +33,47 @@ import { useNavigate } from 'react-router-dom';
 import { ProductForm } from './ProductForm';
 import ProductsManager from '../ProductsManager';
 
+const initialProductState: Product = {
+    id: 0,
+    name: '',
+    image: '',
+    description: '',
+    categories: [],
+    variants: [],
+    sizes: [],
+    prise: 0
+}
 
-
-const Products = () => {
+const UpdatingProducts = () => {
     const dispatch = useDispatch<AppDispatch>()
     const state = useSelector((state: RootState) => state)
     const products = state.products
+    const [product, setProduct] = useState<Product>(initialProductState)
+    // const [isEdit, setEditValue] = useState(false)
+    const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+
 
     useEffect(() => {
         handleGetProducts()
     }, [])
 
-    /**
-    * If you want to keep things simple you can follow this approach on updating
-    * redux state when using async requests instead of using createAsyncThunk
-    */
     const handleGetProducts = async () => {
-        // let's first turn the loader to true so we can have a better UX
         dispatch(productsRequest())
-
-        // Fetching from the local files
         const res = await api.get('/mock/e-commerce/products.json')
-        // At this point we have the data so let's update the store
         dispatch(productsSuccess(res.data))
     }
+    // const handelEidtProduct: ({product :Product})= {
+    //     setEditValue(true)
+
+    // }
 
     return (
         <div className="">
             <div>
 
+                <div>
+                    <ProductForm />
+                </div>
             </div>
 
             <div className='contant'>
@@ -72,6 +85,10 @@ const Products = () => {
                                 <TableCell>ID</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell>Image</TableCell>
+                                <TableCell>Description</TableCell>
+                                <TableCell>Categorise</TableCell>
+                                <TableCell>Variants</TableCell>
+                                <TableCell>Size</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
@@ -80,13 +97,23 @@ const Products = () => {
                                 <TableRow key={product.id}>
                                     <TableCell>{product.id}</TableCell>
                                     <TableCell>{product.name}</TableCell>
-                                    <TableCell><img src={product.image} alt={product.name} width={60} /></TableCell>
+                                    <TableCell>{product.image}</TableCell>
+                                    <TableCell>{product.description}</TableCell>
+                                    <TableCell>{product.categories}</TableCell>
+                                    <TableCell>{product.variants}</TableCell>
+                                    <TableCell>{product.sizes}</TableCell>
                                     <TableCell>
-                                        <IconButton color="secondary" aria-label="edit">
+                                        <IconButton
+                                            color="secondary"
+                                            aria-label="edit"
+                                            onClick={() => setEditingProduct(product)}
+                                        >
                                             <EditIcon />
                                         </IconButton>
+
                                         <IconButton color="error" aria-label="delete">
-                                            <DeleteIcon onClick={() => dispatch(removeProduct({ productId: product.id }))} />
+                                            <DeleteIcon 
+                                            onClick={() => dispatch(removeProduct({ productId: product.id }))} />
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
@@ -99,4 +126,4 @@ const Products = () => {
 
     )
 }
-export default Products
+export default UpdatingProducts

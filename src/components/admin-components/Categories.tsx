@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     Table,
@@ -18,14 +18,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete'
 
 import { AppDispatch, RootState } from '../../redux/store'
-import { fechCategories, deleteCategory } from '../../redux/slices/products/categorySlice';
+import { fechCategories, deleteCategory, addCategort, updateCategory } from '../../redux/slices/products/categorySlice';
 
 
 const Categories = () => {
     const [categoryName, setCategoryName] = useState('')
+    const [isEdit, setEditValue] = useState(false)
+    const [categoryId, setCategoryId] = useState(0)
 
     const dispatch = useDispatch<AppDispatch>()
-    const {items ,isLoading , error } = useSelector((state: RootState) => state.categories)
+    const { items, isLoading, error } = useSelector((state: RootState) => state.categories)
     //const categories = state.categories
 
 
@@ -41,9 +43,26 @@ const Categories = () => {
     const handelChange = (event: ChangeEvent<HTMLInputElement>) => {
         setCategoryName(event.target.value)
     }
-    /*const handelSubmit = (event: FormEvent<HTMLInputElement>) => {
-        setCategoryName(event.target.value)
-    }*/
+    // const shortid = require('shortid')
+
+    const handelSubmit = (event: FormEvent) => {
+        event.preventDefault()
+        if (!isEdit) {
+            const newCategory = { id: `${new Date().getTime()}-${Math.floor(Math.random() * 1000)}`, name: categoryName };
+            dispatch(addCategort(newCategory))
+        } else {
+            const UpdatingCategory = { id: categoryId, name: categoryName };
+            dispatch(updateCategory(UpdatingCategory))
+        }
+
+        setCategoryName('')
+
+    }
+    const handelEidtCategory = (id: number, name: string) => {
+        setCategoryId(id)
+        setEditValue(true)
+        setCategoryName(name)
+    }
 
     if (isLoading) {
         return <p>loding ...</p>
@@ -59,11 +78,12 @@ const Categories = () => {
                 <Toolbar />
                 <Typography variant="h4">Products Categoris</Typography>
                 <Typography variant="h5">add New Category
-                    <form >
+                    <form onSubmit={handelSubmit}>
                         <input type="text" name="category" value={categoryName} onChange={handelChange} />
                         <IconButton color="primary" aria-label="add">
                             <AddIcon />
                         </IconButton>
+                        <button>{isEdit ? 'Update' : 'Add'}</button>
                     </form>
                 </Typography>
                 <TableContainer component={Paper}>
@@ -81,7 +101,7 @@ const Categories = () => {
                                     <TableCell>{category.id}</TableCell>
                                     <TableCell>{category.name}</TableCell>
                                     <TableCell>
-                                        <IconButton color="secondary" aria-label="edit">
+                                        <IconButton color="secondary" aria-label="edit" onClick={() => { handelEidtCategory(category.id, category.name) }}>
                                             <EditIcon />
                                         </IconButton>
                                         <IconButton color="error" aria-label="delete" onClick={() => {
@@ -97,7 +117,7 @@ const Categories = () => {
                 </TableContainer>
             </div>
         </div>
-        
+
     )
 }
 export default Categories

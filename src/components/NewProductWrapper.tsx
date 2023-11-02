@@ -56,7 +56,6 @@ export const NewProductWrapper = () => {
   return (
     <div>
 
-      <Header />
       <h3 className="text-2xl font-bold">Add a new product</h3>
       <ProductForm handleSubmit={handleSubmit} handleChange={handleChange} product={product} />
     </div>

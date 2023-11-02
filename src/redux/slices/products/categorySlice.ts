@@ -34,12 +34,23 @@ export const categorySlice = createSlice({
     name: 'category',
     initialState,
     reducers: {
+        addCategort: (state, action) => {
+            state.items.push(action.payload)
+        },
         sreachByCategoryName:(state, action) =>{
             state.searchTerm =action.payload
         },
         deleteCategory:(state, action) =>{
             const filterCategory = state.items.filter((category) => category.id != action.payload)
             state.items= filterCategory
+        },
+        updateCategory: (state, action) => {
+            const { id, name } = action.payload
+            const foundCategory = state.items.find((category) => category.id == id)
+            if (foundCategory) {
+                foundCategory.name=name
+            }
+
         }
     },
     extraReducers: (builder) => {
@@ -59,6 +70,6 @@ export const categorySlice = createSlice({
             })
     }
 })
-export const { deleteCategory ,sreachByCategoryName} = categorySlice.actions
+export const {addCategort ,deleteCategory ,sreachByCategoryName,updateCategory} = categorySlice.actions
 
 export default categorySlice.reducer

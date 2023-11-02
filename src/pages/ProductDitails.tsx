@@ -1,45 +1,61 @@
 /* eslint-disable prettier/prettier */
 import { ChangeEvent, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import IconButton from '@mui/material/IconButton'
-import { Grid, Card, CardContent, Typography, CardActionArea, CardMedia, Button } from '@mui/material'
+import {
+    Typography,
+    CardActionArea,
+    CardMedia,
+    Button
+} from '@mui/material'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Container from '@mui/material/Container'
 
 import { AppDispatch, RootState } from '../redux/store'
-import { findProductBId, fetchProducts } from '../redux/slices/products/productSlice'
+import { findProductBId, fetchProducts, Product } from '../redux/slices/products/productSlice'
 import { addToCart } from '../redux/slices/products/cartSlice'
 import Header from '../components/Header'
 import '../style/product.css'
 import { fechCategories } from '../redux/slices/products/categorySlice'
+import { ToastContainer, toast } from 'react-toastify'
 
 
 
-const Product = () => {
+const ProductDitails = () => {
     const { id } = useParams()
     const dispatch = useDispatch<AppDispatch>()
     const state = useSelector((state: RootState) => state)
     const product = state.products
     const categories = state.categories
 
+    const navigate = useNavigate();
 
+    const handleNavigation = () => {
+        navigate("/");
 
+    };
     useEffect(() => {
-        dispatch(fetchProducts()).then(() =>
-            dispatch(findProductBId(id))
-        )
-    }
-        , [])
 
-    useEffect(() => {
-        dispatch(fechCategories())
-    }
-        , [])
+        if (product.items.length > 0) {
+            dispatch(findProductBId(Number(id)))
+        } else {
+            // if there were no products in the store, fetch them and then find the product by ID
+            dispatch(fetchProducts()).then(() => dispatch(findProductBId(Number(id))))
+        }
+    }, [id, product.items, dispatch])
 
     const getCategoryName = (categoryId: number) => {
         const categoryItem = categories.items.find((category) => category.id == categoryId)
         return categoryItem ? categoryItem.name + '  ' + "  " : "Category not found"
+    }
+    const handelAddToCart = (product: Product) => {
+        dispatch(addToCart(product))
+        toast.success(`${product.name} added to cart`, {
+            position: "top-right",
+            autoClose: 3000, // Duration in milliseconds
+        });
     }
 
     if (product.isLoading) {
@@ -54,10 +70,13 @@ const Product = () => {
 
         <div>
             <Header />
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />;
+
             <div className="container">
                 {product.singleProduct && (
                     <div className="box">
                         <div className="images">
+                            <span onClick={handleNavigation} ><ArrowBackIcon /></span>
                             <div className="img-holder active">
                                 <img src={product.singleProduct.image} alt={product.singleProduct.name} />
                             </div>
@@ -66,33 +85,33 @@ const Product = () => {
                             <h2>{product.singleProduct.name}</h2>
                             <Typography  >
                                 Categories :
-                                {product.singleProduct.categories.map((categoryId) =>
+                                {product.singleProduct.categories?.map((categoryId) =>
                                     getCategoryName(Number(categoryId))
                                 )}
                             </Typography>
 
                             <span>
-                                {product.singleProduct.sizes.map((size) => (
+                                {product.singleProduct.sizes?.map((size) => (
                                     <Typography className='category' key={size}>{size}</Typography>
                                 ))}
                             </span>
                             <span>
-                                {product.singleProduct.variants.map((variant) => (
+                                {product.singleProduct.variants?.map((variant) => (
                                     <Typography className='category' key={variant}>{variant} </Typography>
 
                                 ))}
                             </span>
 
-                            <span>{product.singleProduct.prise} ARS</span>
+                            <span>{product.singleProduct.prise} SAR</span>
                             <div className="description">
                                 <Typography>{product.singleProduct.description}</Typography>
                             </div>
                             <div className="options">
-                                <Link to={`/add-to-cart/${product.singleProduct.id}`}><Button  >Add to Cart</Button></Link>
+                                <Button onClick={() => { handelAddToCart(product.singleProduct) }} >Add to Cart</Button>
 
                             </div>
                             <div className="options">
-                                <Button  >Back to Shop</Button>
+
                             </div>
                         </div>
                     </div>
@@ -102,4 +121,4 @@ const Product = () => {
 
     )
 }
-export default Product
+export default ProductDitails

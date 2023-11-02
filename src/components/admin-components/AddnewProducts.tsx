@@ -9,19 +9,17 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
+
 import '../../style/admin.css'
 import AdminSidbar from './AdminSidbar';
 import AdminHeader from './AdminHeader';
 import Products from './Products';
 import { NewProductWrapper } from '../NewProductWrapper';
+import UpdatingProducts from './UdpatingProducts';
+import { ProductForm } from './ProductForm';
 
-const ManageProducts = () => {
-    const navigate = useNavigate();
+const AddNewProducts = () => {
 
-    const handleNavigation = () => {
-        navigate("/dashboard/admin/add");
-
-    };
 
     return (
         <div style={{ display: 'flex' }}>
@@ -45,16 +43,21 @@ const ManageProducts = () => {
             </Drawer>
             <Container>
                 <header><AdminHeader /></header>
-                <div className='table-cotent'>
-                    <h2 >Products List</h2>
-                    <h3 >Add Products  <IconButton color="primary" aria-label="add">
-                        <span onClick={handleNavigation} > <AddIcon /></span>
-                    </IconButton></h3>
+                <div>
 
-                    <Products />
+
+                    <div >
+                        <Typography variant="h4">Products List</Typography>
+                        <UpdatingProducts />
+                    </div>
+
+
                 </div>
+
+
+
             </Container>
         </div>
     )
 }
-export default ManageProducts
+export default AddNewProducts

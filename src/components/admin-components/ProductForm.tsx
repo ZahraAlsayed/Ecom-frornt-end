@@ -1,20 +1,71 @@
 /* eslint-disable prettier/prettier */
-import { ChangeEvent, FormEvent } from 'react'
-
-import { Product } from '../../redux/slices/products/productSlice'
-import '../../style/register.css'
+import { useState, ChangeEvent, FormEvent, } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addProduct, Product } from '../../redux/slices/products/productSlice'
+import { AppDispatch, RootState } from '../../redux/store'
+//import '../../style/register.css'
 
 type ProductFormProps = {
   product: Product
   handleSubmit: (e: FormEvent) => void
   handleChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 }
+const initialProductState: Product = {
+  id: 0,
+  name: '',
+  image: '',
+  description: '',
+  categories: [],
+  variants: [],
+  sizes: [],
+  prise: 0
+}
+export function ProductForm() {
+  const dispatch = useDispatch<AppDispatch>()
+  const products = useSelector((state: RootState) => state.products)
+  const [product, setProduct] = useState<Product>(initialProductState)
+  const [editForm , setEditForm]=useState(false)
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
 
-export function ProductForm({ product, handleSubmit, handleChange }: ProductFormProps) {
+    const isList = name === 'categories' || name === 'variants' || name === 'sizes'
+    if (isList) {
+      setProduct({
+        ...product,
+        [name]: value.split(',')
+      })
+      return
+    }
+
+    setProduct({
+      ...product,
+      [name]: value
+    })
+  }
+  const handleEditItem = (id: number) => {
+    const editedProduct = products.items.find((product) => product.id == id)
+    if (editedProduct) {
+      console.log(editedProduct)
+      setProduct({ ...editedProduct, id: editedProduct.id })
+    }
+  }
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    // Send the product data to your backend or in this case send it to Redux
+    console.log('New product data:', product)
+    // let's add Id property to the object (usually IDs are generated automatically on the backend)
+    product.id = +new Date()
+    console.log('product:', product)
+
+    dispatch(addProduct({ product }))
+    // Reset the form
+    setProduct(initialProductState)
+  }
+
 
   return (
 
-    <div className="center">
+    <div className="">
 
       <form onSubmit={handleSubmit} >
         <div className="txtfield">
@@ -27,6 +78,7 @@ export function ProductForm({ product, handleSubmit, handleChange }: ProductForm
             id="name"
             value={product.name}
             onChange={handleChange}
+            required
 
           />
         </div>
@@ -39,6 +91,7 @@ export function ProductForm({ product, handleSubmit, handleChange }: ProductForm
             name="image"
             id="image"
             value={product.image}
+            onChange={handleChange}
 
           />
         </div>
@@ -51,6 +104,7 @@ export function ProductForm({ product, handleSubmit, handleChange }: ProductForm
             id="description"
             value={product.description}
             onChange={handleChange}
+            required
 
           />
         </div>

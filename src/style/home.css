@@ -1,6 +1,17 @@
-
-.category{
+.categories {
+    background-color: #ffffff;
+    display: flex;
+    width: 1000vhpx;
+    padding: 40px;
+    gap: 0.9rem;
+}
+.categories-box{
+    align-content: center;
+    background-color: #ffffff;
+    gap: 0.2rem;
     color: rgb(102, 102, 102);
-    padding: 10px;
+
 
 }
+
+

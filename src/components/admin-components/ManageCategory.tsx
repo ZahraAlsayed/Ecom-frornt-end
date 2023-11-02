@@ -28,7 +28,7 @@ const ManageCategory = () => {
             >
                 <h1>
                     <img
-                        src='..\src\assets\logo-techtrove.png'
+                        src='../../src/assets/logo-techtrove.png'
                         alt="Logo"
                         width={140}
                     />

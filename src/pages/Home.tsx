@@ -5,7 +5,8 @@ import { Grid, Card, CardContent, Typography, CardActionArea, CardMedia, Button 
 import IconButton from '@mui/material/IconButton'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import Container from '@mui/material/Container'
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Link } from 'react-router-dom';
 
@@ -14,6 +15,7 @@ import {
   productsSuccess,
   getSreachResult,
   sortProducts,
+  Product,
 } from '../redux/slices/products/productSlice'
 import { AppDispatch, RootState } from '../redux/store'
 
@@ -24,6 +26,7 @@ import ImageSlider from '../components/ImageSlider'
 import '../style/searchInput.css'
 import { fechCategories } from '../redux/slices/products/categorySlice'
 import '../style/home.css'
+import { addToCart } from '../redux/slices/products/cartSlice'
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -50,12 +53,15 @@ const Home = () => {
     // At this point we have the data so let's update the store
     dispatch(productsSuccess(res.data))
   }
+  const handelAddToCart = (product: Product) => {
+    dispatch(addToCart(product))
+    toast.success(`${product.name} added to cart`, {
+      position: "top-right",
+      autoClose: 3000, // Duration in milliseconds
+    });
+  }
 
 
-  /*const filteredProducts = products.items.filter((product) => {
-    const searchValue = products.searchingThrem.toString().toLowerCase();
-    return product.name.toLowerCase().includes(searchValue);
-  });*/
   const filteredProducts = products.items.filter((product) => {
     const selectedCategories =
       checkedCategories.length > 0
@@ -109,7 +115,9 @@ const Home = () => {
       <div>
         <ImageSlider />
       </div>
-
+      <ToastContainer position="top-right"
+        autoClose={3000} hideProgressBar={false}
+        newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />;
       <div className="search-bar">
         <input type="text" placeholder="Search products" value={products.searchingTerm} onChange={handleSearch} />
         <div className="sort-dropdown">
@@ -120,10 +128,10 @@ const Home = () => {
           </select>
         </div>
       </div>
-      <div className='categories-box'>
-        <h2>Filter by Categories : </h2>
+      <div className='categories'>
+        <span>Filter by </span>
         {categories.items.map(category => (
-          <div key={category.id}>
+          <div key={category.id} className='categories-box'>
             <label htmlFor='category'>
               <input
                 type="checkbox"
@@ -138,7 +146,7 @@ const Home = () => {
           </div>
         ))}
       </div>
-      <div className="body">
+      <div className="body" >
         <Container  >
           <Grid container item spacing={{ xs: 4, md: 4 }} alignItems='center'>
             {filteredProducts.map((product) => (
@@ -147,10 +155,21 @@ const Home = () => {
                 sm={5} md={4}
                 lg={4}
                 alignItems='center'>
-                <Card className="product-card" sx={{ maxWidth: 400 }}  >
+                <Card className="product-card" style={{
+                  height: '520px', // Set the desired height
+                  width: '100%', // Ensure the image takes the full width of the card
+                  objectFit: 'cover', // Ensure the image covers the specified area
+                  aspectRatio: '1/1', // Fixed aspect ratio (1:1 for square images)
+                }}  >
                   <CardActionArea>
 
                     <CardMedia
+                      style={{
+                        height: '300px', // Set the desired height
+                        width: '100%', // Ensure the image takes the full width of the card
+                        objectFit: 'cover', // Ensure the image covers the specified area
+                        aspectRatio: '1/1', // Fixed aspect ratio (1:1 for square images)
+                      }}
                       sizes='small'
                       component="img"
                       height="140"
@@ -172,14 +191,14 @@ const Home = () => {
                       </Typography>
 
                       <Typography gutterBottom component="div">
-                        {product.prise} RS
+                        {product.prise} SAR
                       </Typography>
 
                       <Typography variant="body2" color="text.secondary">
                         {product.description}
                       </Typography>
                     </CardContent>
-                    <IconButton color="primary" aria-label="add to shopping cart" >
+                    <IconButton color="primary" aria-label="add to shopping cart" onClick={() => { handelAddToCart(product) }} >
                       <AddShoppingCartIcon fontSize="small" />
                     </IconButton>
 

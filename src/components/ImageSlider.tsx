@@ -7,18 +7,22 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import '../style/searchInput.css'
 const settings = {
-    dots: true, // Show dots for navigation
-    infinite: true, // Loop the slider
-    speed: 200, // Transition speed in milliseconds
-    slidesToShow: 1, // Number of slides to show at a time
-    slidesToScroll: 1, // Number of slides to scroll on arrow click
+    dots: true, 
+    infinite: true, 
+    speed: 200, 
+    slidesToShow: 1, 
+    slidesToScroll: 1, 
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true
 };
 
 const ImageSlider = () => {
     const images = [
         './src/assets/welcome.png',
         './src/assets/offers.png',
-        './src/assets/welcome.png'
+        './src/assets/banner3.png',
+        './src/assets/banner4.png',
 
 
 
