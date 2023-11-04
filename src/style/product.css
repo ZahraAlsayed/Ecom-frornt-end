@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap');
 
-
 * {
     box-sizing: border-box;
     font-family: 'Source Sans Pro', sans-serif;
@@ -10,7 +9,7 @@
 }
 
 .container {
-    background-color: #b9b9b9;
+    background-color: #b9b9b95a;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -19,11 +18,12 @@
 }
 
 .box {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.425);
+    border: solid 1px;
     border-radius: 10px;
     padding: 45px;
     margin: 15px 0;
-    margin-left: 180px;
+    margin-left:150px;
     width: 950px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -37,7 +37,6 @@
 .box .images {
     
     width: 300px;
- 
     grid-area: images;
     display: grid;
     grid-template-columns: repeat(3, auto);
@@ -84,7 +83,7 @@
 }
 
 .box .basic-info .options Button:hover {
-    background-color:#ffb900;
+    background-color:#FF8E0A;
 }
 
 .box .description {

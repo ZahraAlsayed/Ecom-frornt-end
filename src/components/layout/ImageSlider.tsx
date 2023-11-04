@@ -5,7 +5,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import '../style/searchInput.css'
+import '../../style/searchInput.css'
 const settings = {
     dots: true, 
     infinite: true, 

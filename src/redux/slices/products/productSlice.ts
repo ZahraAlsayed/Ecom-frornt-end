@@ -71,8 +71,8 @@ export const productSlice = createSlice({
       if(sortingInput === 'name'){
         state.items.sort((a,b)=>a.name.localeCompare(b.name) )
       }
-      else if(sortingInput === 'id'){
-        state.items.sort((a,b)=>a.id -b.id )
+      else if(sortingInput === 'prise'){
+        state.items.sort((a,b)=>a.prise -b.prise )
       }
     },
     findProductBId: (state, action) => {

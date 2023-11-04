@@ -3,13 +3,16 @@ import {
     Container,
     CssBaseline,
     Drawer
-} from '@mui/material';
+} from '@mui/material'
 
+
+
+import AdminSidbar from './AdminSidbar'
+import AdminHeader from './AdminHeader'
+import Orders from './Orders'
 
 import '../../style/admin.css'
-import AdminSidbar from './AdminSidbar';
-import AdminHeader from './AdminHeader';
-import Orders from './Orders';
+import '../../style/table.css'
 
 const ManageOrders = () => {
 
@@ -25,23 +28,13 @@ const ManageOrders = () => {
                     flexShrink: 0,
                 }}
             >
-                <h1>
-                    <img
-                        src='..\src\assets\logo-techtrove.png'
-                        alt="Logo"
-                        width={140}
-                    />
-                </h1>
                 <AdminSidbar />
             </Drawer>
-            <Container>
+            <Container className="table-container">
                 <header><AdminHeader /></header>
-                <div>
+                <div className="table-container">
                     <Orders />
                 </div>
-
-
-
             </Container>
         </div>
     )

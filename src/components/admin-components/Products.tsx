@@ -28,9 +28,7 @@ import {
 import api from '../../api'
 
 import '../../style/admin.css'
-import { useNavigate } from 'react-router-dom';
-import { ProductForm } from './ProductForm';
-import ProductsManager from '../ProductsManager';
+
 
 
 
@@ -58,12 +56,8 @@ const Products = () => {
     }
 
     return (
-        <div className="">
-            <div>
-
-            </div>
-
-            <div className='contant'>
+        <div >
+            <div className="table-container">
                 <Toolbar />
                 <TableContainer component={Paper}>
                     <Table>

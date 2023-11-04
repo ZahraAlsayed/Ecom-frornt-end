@@ -2,19 +2,18 @@
 import {
     Container,
     CssBaseline,
-    Drawer,
+    Drawer
+} from '@mui/material';
 
-} from '@mui/material'
 
-import Categories from './Categories'
 import AdminSidbar from './AdminSidbar'
 import AdminHeader from './AdminHeader'
+import UserList from './UsersList'
 
-import '../../style/table.css'
 import '../../style/admin.css'
-import AdminFooter from './AdminFooter'
+import '../../style/table.css'
 
-const ManageCategory = () => {
+const ManageUsers = () => {
 
 
     return (
@@ -28,16 +27,22 @@ const ManageCategory = () => {
                     flexShrink: 0,
                 }}
             >
+                <h1>
+                    <img
+                        src='../../src/assets/logo-techtrove.png'
+                        alt="Logo"
+                        width={140}
+                    />
+                </h1>
                 <AdminSidbar />
             </Drawer>
             <Container className="table-container">
-                <AdminHeader />
+                <header><AdminHeader /></header>
                 <div className="table-container">
-                    <Categories />
+                    <UserList />
                 </div>
-
             </Container>
         </div>
     )
 }
-export default ManageCategory
+export default ManageUsers

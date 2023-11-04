@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 import { ProductForm } from './admin-components/ProductForm'
 import { addProduct, Product } from '../redux/slices/products/productSlice'
 import { AppDispatch } from '../redux/store'
-import Header from './Header'
 
 const initialProductState: Product = {
   id: 0,
@@ -57,7 +56,6 @@ export const NewProductWrapper = () => {
     <div>
 
       <h3 className="text-2xl font-bold">Add a new product</h3>
-      <ProductForm handleSubmit={handleSubmit} handleChange={handleChange} product={product} />
     </div>
   )
 }

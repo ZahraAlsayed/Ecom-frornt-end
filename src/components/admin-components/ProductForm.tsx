@@ -3,8 +3,9 @@ import { useState, ChangeEvent, FormEvent, } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProduct, Product } from '../../redux/slices/products/productSlice'
 import { AppDispatch, RootState } from '../../redux/store'
-//import '../../style/register.css'
 
+import '../../style/register.css'
+import '../../style/table.css'
 type ProductFormProps = {
   product: Product
   handleSubmit: (e: FormEvent) => void
@@ -65,7 +66,7 @@ export function ProductForm() {
 
   return (
 
-    <div className="">
+    <div className="table-container">
 
       <form onSubmit={handleSubmit} >
         <div className="txtfield">

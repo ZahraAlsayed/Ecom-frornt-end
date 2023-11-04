@@ -1,9 +1,10 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
+
 .header {
-    height:auto;
+    height: auto;
     display: flex;
     align-items: center;
     background-color: #ffffff;
@@ -28,8 +29,8 @@
     display: flex;
     justify-content: space-between;
     max-width: 1000px;
-    margin: 0 auto;
-    margin-left: 700px;
+    margin-bottom: 4px;
+    margin-left: 650px;
 }
 
 .header__option {
@@ -50,24 +51,28 @@
     font-size: 17px;
     font-weight: 800;
 }
- .linktext{
+
+.linktext {
     color: #000;
     font-size: 17px;
     font-weight: 800;
     text-decoration: none;
- }
- .header__optionLineTwo:hover{
+}
+
+.header__optionLineTwo:hover {
     color: #808080;
- }
-  .linktext:hover {
+}
+
+.linktext:hover {
     color: #808080;
- }
+}
 
 
 
 .body {
     padding: 20px;
 }
+
 .search-bar {
     margin: 20px 0;
 }
@@ -95,18 +100,20 @@
     cursor: pointer;
 }
 
-.com{
+.com {
     margin-left: 300px;
 }
-.sidebar{
+
+.sidebar {
     width: 60%;
     border-radius: 5px;
-    background-color: #222121;   
+    background-color: #222121;
     padding: 20px;
     text-align: center;
 }
-.cart-counter{
-    background-color:#FF8E0A ;
+
+.cart-counter {
+    background-color: #FF8E0A;
     content: attr(value);
     font-size: 12px;
     border-radius: 50%;
@@ -115,8 +122,9 @@
     left: -10px;
     top: -10px;
     opacity: 0.9;
- 
+
 }
+
 @media (max-width: 768px) {
 
     /* Add styles for smaller screens (e.g., mobile) */

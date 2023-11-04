@@ -1,19 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { Link } from 'react-router-dom';
 import {
     Container,
     CssBaseline,
     Drawer
-} from '@mui/material';
+} from '@mui/material'
 
+import AdminSidbar from './AdminSidbar'
+import AdminHeader from './AdminHeader'
+import ProductsManager from '../ProductsManager'
 
+import '../../style/table.css'
 import '../../style/admin.css'
-import AdminSidbar from './AdminSidbar';
-import AdminHeader from './AdminHeader';
-import Products from './Products';
-import { NewProductWrapper } from '../NewProductWrapper';
-import ProductsManager from '../ProductsManager';
-
+import AdminFooter from './AdminFooter'
 const ManageNewProdcuts = () => {
 
 
@@ -28,24 +26,14 @@ const ManageNewProdcuts = () => {
                     flexShrink: 0,
                 }}
             >
-                <h1>
-                    <img
-                        src='..\src\assets\logo-techtrove.png'
-                        alt="Logo"
-                        width={140}
-                    />
-                </h1>
                 <AdminSidbar />
             </Drawer>
-            <Container>
+            <Container className="table-container">
                 <header><AdminHeader /></header>
-                <div>
+                <div className="table-container">
 
                     <ProductsManager />
                 </div>
-
-
-
             </Container>
         </div>
     )

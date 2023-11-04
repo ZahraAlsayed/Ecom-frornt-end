@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store';
 import {
     Table,
     TableBody,
@@ -18,7 +17,9 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { deleteUser, fechUsers } from '../../redux/slices/userslices/userSlice';
+import { AppDispatch, RootState } from '../../redux/store';
+import { deleteUser, fechUsers } from '../../redux/slices/userslices/userSlice'
+
 import '../../style/admin.css'
 
 const UserList = () => {
@@ -43,7 +44,7 @@ const UserList = () => {
 
     return (
         <div >
-            <div className="sidebar">
+            <div className="table-container">
                 <Toolbar />
                 <Typography variant="h4">User List</Typography>
                 <TableContainer component={Paper}>
@@ -86,7 +87,7 @@ const UserList = () => {
                 </TableContainer>
             </div>
         </div>
-       
+
     );
 };
 

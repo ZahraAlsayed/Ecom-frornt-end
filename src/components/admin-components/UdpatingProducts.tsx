@@ -10,7 +10,6 @@ import {
     TableHead,
     TableRow,
     Toolbar,
-    Typography,
     Paper,
     IconButton
 } from '@mui/material';
@@ -28,10 +27,10 @@ import {
 
 import api from '../../api'
 
+
+import { ProductForm } from './ProductForm'
+
 import '../../style/admin.css'
-import { useNavigate } from 'react-router-dom';
-import { ProductForm } from './ProductForm';
-import ProductsManager from '../ProductsManager';
 
 const initialProductState: Product = {
     id: 0,

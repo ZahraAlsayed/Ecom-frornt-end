@@ -10,7 +10,10 @@ export type User = {
     password: string,
     role: string
 }
-
+const data =
+  localStorage.getItem('loginData') !== null
+    ? JSON.parse(String(localStorage.getItem('login')))
+    : []
 export type UserState = {
   items: User[]
   error: null | string
@@ -37,12 +40,35 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         login: (state, action) => {
-            state.isLoggedIn = true
-            state.userData=action.payload
+      state.isLoggedIn = true
+      state.userData = action.payload
+
+      localStorage.setItem(
+        'login',
+        JSON.stringify({
+          isLoggedIn: state.isLoggedIn,
+          userData: state.userData
+        })
+      )
         },
-        deleteUser:(state, action) =>{
+        logout: (state) => {
+      state.isLoggedIn = false
+      state.userData = null
+      localStorage.setItem(
+        'login',
+        JSON.stringify({
+          isLoggedIn: state.isLoggedIn,
+          userData: state.userData
+        })
+      )
+    },
+       deleteUser:(state, action) =>{
             const filterUsre= state.items.filter((user) => user.id != action.payload)
-            state.items= filterUsre
+           state.items = filterUsre
+            localStorage.setItem('users', JSON.stringify({ users: state.items }))
+        },
+        addNewUser: (state, action) => {
+           state.items.push(action.payload)
         }
     },
     extraReducers: (builder) => {
@@ -63,6 +89,6 @@ export const userSlice = createSlice({
     }
 })
 //export const { removeProduct, addProduct, productsRequest, productsSuccess , getSreachResult ,sortProducts} = userSlice.actions
-export const { login ,deleteUser} = userSlice.actions
+export const { login ,deleteUser ,logout,addNewUser} = userSlice.actions
 
 export default userSlice.reducer

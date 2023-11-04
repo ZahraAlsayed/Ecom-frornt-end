@@ -16,10 +16,11 @@ import Container from '@mui/material/Container'
 import { AppDispatch, RootState } from '../redux/store'
 import { findProductBId, fetchProducts, Product } from '../redux/slices/products/productSlice'
 import { addToCart } from '../redux/slices/products/cartSlice'
-import Header from '../components/Header'
-import '../style/product.css'
-import { fechCategories } from '../redux/slices/products/categorySlice'
+import Header from '../components/layout/Header'
 import { ToastContainer, toast } from 'react-toastify'
+
+import '../style/product.css'
+import Footer from '../components/layout/Footer'
 
 
 
@@ -35,7 +36,7 @@ const ProductDitails = () => {
     const handleNavigation = () => {
         navigate("/");
 
-    };
+    }
     useEffect(() => {
 
         if (product.items.length > 0) {
@@ -70,7 +71,11 @@ const ProductDitails = () => {
 
         <div>
             <Header />
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />;
+            <ToastContainer position="top-right"
+                autoClose={3000} hideProgressBar={false}
+                newestOnTop closeOnClick
+                rtl={false} pauseOnFocusLoss
+                draggable pauseOnHover />
 
             <div className="container">
                 {product.singleProduct && (
@@ -117,6 +122,7 @@ const ProductDitails = () => {
                     </div>
                 )}
             </div>
+            <Footer/>
         </div>
 
     )

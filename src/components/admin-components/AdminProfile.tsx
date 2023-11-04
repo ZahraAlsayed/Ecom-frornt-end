@@ -1,19 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { Link } from 'react-router-dom';
 import {
     Container,
     CssBaseline,
     Drawer
 } from '@mui/material';
 
+
+import AdminSidbar from './AdminSidbar'
+import AdminHeader from './AdminHeader'
+
 import '../../style/admin.css'
-import AdminSidbar from './AdminSidbar';
-import AdminHeader from './AdminHeader';
-import UserList from './UsersList';
-
-const ManageUers = () => {
-
-
+import Profile from './Profile';
+function AdminProfile() {
     return (
         <div style={{ display: 'flex' }}>
             <CssBaseline />
@@ -25,25 +23,19 @@ const ManageUers = () => {
                     flexShrink: 0,
                 }}
             >
-                <h1>
-                    <img
-                        src='..\src\assets\logo-techtrove.png'
-                        alt="Logo"
-                        width={140}
-                    />
-                </h1>
                 <AdminSidbar />
             </Drawer>
-            <Container>
+            <Container className="table-container">
                 <header><AdminHeader /></header>
-                <div>
-                    <UserList />
+                <div >
+                    <Profile />
                 </div>
-
-
-
             </Container>
         </div>
+
+
     )
+
 }
-export default ManageUers
+
+export default AdminProfile

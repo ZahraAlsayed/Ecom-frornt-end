@@ -11,15 +11,23 @@ import {
     Toolbar,
     Typography,
     Paper,
-    IconButton
+    IconButton,
+    Button,
+
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import { AppDispatch, RootState } from '../../redux/store'
-import { fechCategories, deleteCategory, addCategort, updateCategory } from '../../redux/slices/products/categorySlice';
 
+import { AppDispatch, RootState } from '../../redux/store'
+import {
+    fechCategories,
+    deleteCategory,
+    addCategort,
+    updateCategory
+} from '../../redux/slices/products/categorySlice';
+
+import '../../style/table.css'
 
 const Categories = () => {
     const [categoryName, setCategoryName] = useState('')
@@ -72,20 +80,25 @@ const Categories = () => {
     }
 
     return (
-        < div>
-            <div className='contant'>
-
-                <Toolbar />
-                <Typography variant="h4">Products Categoris</Typography>
-                <Typography variant="h5">add New Category
-                    <form onSubmit={handelSubmit}>
-                        <input type="text" name="category" value={categoryName} onChange={handelChange} />
-                        <IconButton color="primary" aria-label="add">
-                            <AddIcon />
-                        </IconButton>
-                        <button>{isEdit ? 'Update' : 'Add'}</button>
-                    </form>
-                </Typography>
+        <div className='contant'>
+            <Toolbar />
+            <Typography variant="h4">Products Categoris</Typography>
+            <form onSubmit={handelSubmit}>
+                <input
+                    style={{
+                        flex: 0.5,
+                        width: '300px',
+                        padding: '10px',
+                        border: '2px solid #ccc',
+                        borderRadius: '40px',
+                        marginLeft: '300px',
+                        color: 'rgb(102, 102, 102)',
+                    }}
+                    type="text" name="category" placeholder='add New Category'
+                    value={categoryName} onChange={handelChange} />
+                <span> <Button>{isEdit ? 'Update' : 'Add'}</Button></span>
+            </form>
+            <div className="table-container">
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
@@ -116,7 +129,7 @@ const Categories = () => {
                     </Table>
                 </TableContainer>
             </div>
-        </div>
+        </div >
 
     )
 }

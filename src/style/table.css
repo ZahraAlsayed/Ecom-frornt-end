@@ -1,0 +1,12 @@
+.table-container {
+    overflow-x: auto;
+    margin: 0;
+    padding: 0;
+}
+
+/* Adjust styling for smaller screens */
+@media (max-width: 600px) {
+    .table-container {
+        overflow-x: auto;
+    }
+}

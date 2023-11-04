@@ -1,27 +1,29 @@
 /* eslint-disable prettier/prettier */
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import {
     Container,
     CssBaseline,
     Drawer,
-    Typography,
     IconButton
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add'
+
+
+import AdminSidbar from './AdminSidbar'
+import AdminHeader from './AdminHeader'
+import Products from './Products'
 
 import '../../style/admin.css'
-import AdminSidbar from './AdminSidbar';
-import AdminHeader from './AdminHeader';
-import Products from './Products';
-import { NewProductWrapper } from '../NewProductWrapper';
+import '../../style/table.css'
+
 
 const ManageProducts = () => {
     const navigate = useNavigate();
 
     const handleNavigation = () => {
-        navigate("/dashboard/admin/add");
+        navigate("/dashboard/admin/addpoduct");
 
-    };
+    }; 
 
     return (
         <div style={{ display: 'flex' }}>
@@ -34,23 +36,15 @@ const ManageProducts = () => {
                     flexShrink: 0,
                 }}
             >
-                <h1>
-                    <img
-                        src='..\src\assets\logo-techtrove.png'
-                        alt="Logo"
-                        width={140}
-                    />
-                </h1>
                 <AdminSidbar />
             </Drawer>
-            <Container>
+            <Container className="table-container">
                 <header><AdminHeader /></header>
-                <div className='table-cotent'>
+                <div className="table-container">
                     <h2 >Products List</h2>
                     <h3 >Add Products  <IconButton color="primary" aria-label="add">
                         <span onClick={handleNavigation} > <AddIcon /></span>
                     </IconButton></h3>
-
                     <Products />
                 </div>
             </Container>

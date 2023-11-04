@@ -1,19 +1,19 @@
 /* eslint-disable prettier/prettier */
-import { Link } from 'react-router-dom';
-import { Container, CssBaseline, Drawer, List, ListItem, ListItemIcon, ListItemText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography, Paper, IconButton } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+    Container,
+    CssBaseline,
+    Drawer,
+    Typography,
+    Paper,
+    Avatar
+} from '@mui/material';
 
-import Footer from '../components/Footer'
-import AdminSidebar from '../components/admin-components/AdminSidbar';
-import '../style/admin.css'
-import Header from '../components/Header';
-import { useState } from 'react';
 import AdminFooter from '../components/admin-components/AdminFooter';
 import AdminHeader from '../components/admin-components/AdminHeader';
 import UserList from '../components/admin-components/UsersList';
+import AdminSidebar from '../components/admin-components/AdminSidbar';
+
+import '../style/admin.css'
 
 const Admin = () => {
 
@@ -29,24 +29,27 @@ const Admin = () => {
                     flexShrink: 0,
                 }}
             >
-                <h1>
-                    <img
-                        src='..\src\assets\logo-techtrove.png'
-                        alt="Logo"
-                        width={140}
-                    />
-                </h1>
                 <AdminSidebar />
             </Drawer>
             <Container>
                 <header><AdminHeader /></header>
-                <div>
-                    <UserList />
-                </div>
-
-
-
+                <Container maxWidth='md'>
+                    <Paper elevation={8} style={{ padding: '70px', textAlign: 'center' }}>
+                        <Avatar
+                            alt="User Profile"
+                            src="path_to_profile_image.jpg"
+                            sx={{ width: 100, height: 100, margin: '0 auto' }}
+                        />
+                        <Typography variant="h4" sx={{ margin: '70px' }}>
+                            John Doe
+                        </Typography>
+                        <Typography variant="body1" sx={{ marginBottom: '20px' }}>
+                            Email: johndoe@example.com
+                        </Typography>
+                    </Paper>
+                </Container>
             </Container>
+            <AdminFooter/>
         </div>
     )
 }

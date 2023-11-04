@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -19,7 +19,7 @@ import { AppDispatch, RootState } from '../../redux/store'
 import { fechOrders } from '../../redux/slices/userslices/orderSlice';
 
 import '../../style/admin.css'
-
+import '../../style/table.css'
 
 const Orders = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -45,7 +45,7 @@ const Orders = () => {
                 <Toolbar />
                 <Typography variant="h4">orders List</Typography>
                 <TableContainer component={Paper}>
-                    <Table>
+                    <Table className="table-container">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Order ID</TableCell>

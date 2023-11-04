@@ -1,3 +1,36 @@
+
+.search-bar {
+    display: flex;
+    margin: 20px 0;
+    margin-left: 20%;
+}
+.search-bar input {
+    flex: 0.5;
+    width: 800px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 40px;
+    margin-left: 300px;
+    color: rgb(102, 102, 102);
+}
+
+.sort-dropdown {
+    margin-right: 300px;
+    margin-bottom: 20px;
+
+}
+.sort-dropdown select {
+    background-color: #ffffff;
+    color: rgb(102, 102, 102);
+    border: 2px solid #ccc;
+    padding: 9px;
+    width: 200px;
+    border-radius: 30px;
+    font-size: 15px;
+    -webkit-appearance: button;
+    appearance: button;
+    outline: non
+}
 .categories {
     background-color: #ffffff;
     display: flex;
@@ -10,8 +43,29 @@
     background-color: #ffffff;
     gap: 0.2rem;
     color: rgb(102, 102, 102);
+    margin-top:5px;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    overflow: hidden;
+    float: left;
+    text-align: center;
+}
 
+.btn-paginacao {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    left: 0;
+    bottom: 0;
+}
 
+.pagenumber{
+   color: black;
 }
 
 

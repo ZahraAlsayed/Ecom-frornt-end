@@ -1,17 +1,19 @@
 /* eslint-disable prettier/prettier */
 import React from 'react'
 import { Link } from 'react-router-dom'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
-import '../style/header.css'
-import CartIcon from './CartIcon';
-import { AppDispatch, RootState } from '../redux/store';
+import { AppDispatch, RootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
+
+import CartIcon from './CartIcon'
+import '../../style/header.css'
 
 const Header = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const { cartItems } = useSelector((state: RootState) => state.cart)
+    const { isLoggedIn } = useSelector((state: RootState) => state.users)
     return (
         <div>
             <header className="header">
@@ -26,7 +28,7 @@ const Header = () => {
                 <div className="header__nav">
 
                     <div className="header__option">
-                        <Link to={'/'}>
+                        <Link to={'/'} className='linktext'>
                             <span className="header__optionLineTwo">Home</span>
                         </Link>
                     </div>
@@ -35,17 +37,22 @@ const Header = () => {
                     </div>
 
                     <div className="header__option">
-                        <Link to={'/cart'}>
+                        <Link to={'/cart'} className='linktext'>
                             <span className="header__optionLineTwo"> <CartIcon value={cartItems.length > 0 ? cartItems.length : 0} /></span>
 
                         </Link>
                     </div>
 
                     <div className="header__option">
-                        <Link to={'/login'}>
-                            <span className="header__optionLineTwo">Login/SingUp</span>
-                        </Link>
-
+                        {isLoggedIn ? (
+                            <Link to={'/login'} className='linktext'>
+                                <span className="header__optionLineTwo"> <ExitToAppIcon fontSize="small" /></span>
+                            </Link>
+                        ) : (
+                            <Link to={'/login'} className='linktext'>
+                                <span className="header__optionLineTwo">Login/SingUp</span>
+                            </Link>
+                        )}
                     </div>
 
 

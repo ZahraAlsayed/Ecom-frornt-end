@@ -1,7 +1,4 @@
 /* eslint-disable prettier/prettier */
-//import { ProductsManager } from './components/ProductsManager'
-
-
 import { useEffect } from 'react'
 
 import { useDispatch } from 'react-redux';
