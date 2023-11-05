@@ -27,13 +27,6 @@ const ManageUsers = () => {
                     flexShrink: 0,
                 }}
             >
-                <h1>
-                    <img
-                        src='../../src/assets/logo-techtrove.png'
-                        alt="Logo"
-                        width={140}
-                    />
-                </h1>
                 <AdminSidbar />
             </Drawer>
             <Container className="table-container">

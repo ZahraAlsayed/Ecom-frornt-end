@@ -122,7 +122,7 @@ const ProductDitails = () => {
                     </div>
                 )}
             </div>
-            <Footer/>
+            <Footer />
         </div>
 
     )

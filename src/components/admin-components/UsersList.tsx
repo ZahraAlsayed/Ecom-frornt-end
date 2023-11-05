@@ -25,7 +25,7 @@ import '../../style/admin.css'
 const UserList = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { items, isLoading, error } = useSelector((state: RootState) => state.users);
-    //const users = state.users;
+    
 
     useEffect(() => {
         dispatch(fechUsers());

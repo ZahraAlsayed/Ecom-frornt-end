@@ -48,7 +48,7 @@ const UpdatingProducts = () => {
     const state = useSelector((state: RootState) => state)
     const products = state.products
     const [product, setProduct] = useState<Product>(initialProductState)
-    // const [isEdit, setEditValue] = useState(false)
+ 
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
 
@@ -61,10 +61,7 @@ const UpdatingProducts = () => {
         const res = await api.get('/mock/e-commerce/products.json')
         dispatch(productsSuccess(res.data))
     }
-    // const handelEidtProduct: ({product :Product})= {
-    //     setEditValue(true)
 
-    // }
 
     return (
         <div className="">

@@ -36,7 +36,7 @@ const Categories = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const { items, isLoading, error } = useSelector((state: RootState) => state.categories)
-    //const categories = state.categories
+    
 
 
     useEffect(() => {
@@ -51,8 +51,7 @@ const Categories = () => {
     const handelChange = (event: ChangeEvent<HTMLInputElement>) => {
         setCategoryName(event.target.value)
     }
-    // const shortid = require('shortid')
-
+    
     const handelSubmit = (event: FormEvent) => {
         event.preventDefault()
         if (!isEdit) {
@@ -96,7 +95,7 @@ const Categories = () => {
                     }}
                     type="text" name="category" placeholder='add New Category'
                     value={categoryName} onChange={handelChange} />
-                <span> <Button>{isEdit ? 'Update' : 'Add'}</Button></span>
+                <span> <button>{isEdit ? 'Update' : 'Add'}</button></span>
             </form>
             <div className="table-container">
                 <TableContainer component={Paper}>

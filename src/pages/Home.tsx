@@ -27,9 +27,10 @@ import api from '../api'
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import ImageSlider from '../components/layout/ImageSlider'
-//import '../style/searchInput.css'
-import '../style/home.css'
 import { addToCart } from '../redux/slices/products/cartSlice'
+
+import '../style/home.css'
+
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>()

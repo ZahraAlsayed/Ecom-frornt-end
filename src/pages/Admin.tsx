@@ -10,7 +10,6 @@ import {
 
 import AdminFooter from '../components/admin-components/AdminFooter';
 import AdminHeader from '../components/admin-components/AdminHeader';
-import UserList from '../components/admin-components/UsersList';
 import AdminSidebar from '../components/admin-components/AdminSidbar';
 
 import '../style/admin.css'

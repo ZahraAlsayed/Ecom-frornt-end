@@ -11,7 +11,7 @@ import ProductsManager from '../ProductsManager'
 
 import '../../style/table.css'
 import '../../style/admin.css'
-import AdminFooter from './AdminFooter'
+
 const ManageNewProdcuts = () => {
 
 

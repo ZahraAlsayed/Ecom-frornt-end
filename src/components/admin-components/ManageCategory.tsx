@@ -12,7 +12,7 @@ import AdminHeader from './AdminHeader'
 
 import '../../style/table.css'
 import '../../style/admin.css'
-import AdminFooter from './AdminFooter'
+
 
 const ManageCategory = () => {
 

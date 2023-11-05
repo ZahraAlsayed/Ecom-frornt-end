@@ -22,12 +22,6 @@ const Cart = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { cartItems } = useSelector((state: RootState) => state.cart)
 
-    const navigate = useNavigate();
-
-    const handleNavigation = () => {
-        navigate("/");
-
-    };
     const handelRemoveFromCart = (id: number) => {
         dispatch(removeFromCart(id))
         toast.success('Product removed successfully')
@@ -44,7 +38,7 @@ const Cart = () => {
         return totalAmount
     }
 
-    console.log(cartItems)
+
 
 
     return (

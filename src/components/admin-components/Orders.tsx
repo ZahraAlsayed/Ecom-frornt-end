@@ -24,7 +24,7 @@ import '../../style/table.css'
 const Orders = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { items, isLoading, error } = useSelector((state: RootState) => state.orders)
-    //const orders = state.orders
+    
 
     useEffect(() => {
         dispatch(fechOrders())
