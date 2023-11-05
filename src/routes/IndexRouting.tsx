@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 import Home from '../pages/Home';
-import ProductDitails from '../pages/ProductDitails';
+import ProductDetails from '../pages/ProductDetails';
 import Cart from '../components/layout/Cart';
 import SingupForm from '../components/SingupForm';
 import Admin from '../pages/Admin';
@@ -30,7 +30,7 @@ function IndexRouting() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/product/:id' element={<ProductDitails />} />
+                <Route path='/product/:id' element={<ProductDetails />} />
                 <Route path='/singup' element={<SingupForm />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/cart' element={<Cart />} />

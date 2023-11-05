@@ -6,11 +6,12 @@ import {
 } from '@mui/material';
 
 
-import AdminSidbar from './AdminSidbar'
+import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
+import Profile from './Profile'
 
 import '../../style/admin.css'
-import Profile from './Profile';
+
 function AdminProfile() {
     return (
         <div style={{ display: 'flex' }}>
@@ -23,7 +24,7 @@ function AdminProfile() {
                     flexShrink: 0,
                 }}
             >
-                <AdminSidbar />
+                <AdminSidebar />
             </Drawer>
             <Container className="table-container">
                 <header><AdminHeader /></header>

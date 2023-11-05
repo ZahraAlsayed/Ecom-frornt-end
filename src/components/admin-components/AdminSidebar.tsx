@@ -22,7 +22,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 
 import '../../style/admin.css'
 
-const AdminSidbar = () => {
+const AdminSidebar = () => {
     const [open, setOpen] = useState(false);
 
     const toggleSidebar = () => {
@@ -104,4 +104,4 @@ const AdminSidbar = () => {
     );
 };
 
-export default AdminSidbar;
+export default AdminSidebar

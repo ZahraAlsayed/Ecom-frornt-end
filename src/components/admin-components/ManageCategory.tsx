@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 
 import Categories from './Categories'
-import AdminSidbar from './AdminSidbar'
+import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
 
 import '../../style/table.css'
@@ -28,7 +28,7 @@ const ManageCategory = () => {
                     flexShrink: 0,
                 }}
             >
-                <AdminSidbar />
+                <AdminSidebar />
             </Drawer>
             <Container className="table-container">
                 <AdminHeader />

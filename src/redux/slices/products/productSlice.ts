@@ -11,7 +11,7 @@ export type Product = {
   categories: number[]
   variants: string[]
   sizes: string[]
-  prise : number
+  price : number
 }
 
 export type ProductState = {
@@ -72,7 +72,7 @@ export const productSlice = createSlice({
         state.items.sort((a,b)=>a.name.localeCompare(b.name) )
       }
       else if(sortingInput === 'prise'){
-        state.items.sort((a,b)=>a.prise -b.prise )
+        state.items.sort((a,b)=>a.price -b.price )
       }
     },
     findProductBId: (state, action) => {

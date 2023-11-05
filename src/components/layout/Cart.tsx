@@ -33,7 +33,7 @@ const Cart = () => {
     }
     const totalAmountOfCart = () => {
         let totalAmount = 0
-        cartItems.length > 0 && cartItems.map((item) => totalAmount = totalAmount + item.prise)
+        cartItems.length > 0 && cartItems.map((item) => totalAmount = totalAmount + item.price)
 
         return totalAmount
     }
@@ -60,7 +60,7 @@ const Cart = () => {
                                             <img src={item.image} alt={item.name} />
                                             <div className="product-info">
                                                 <h3 className="product-name">{item.name}</h3>
-                                                <h4 className="product-price">{item.prise} ASR</h4>
+                                                <h4 className="product-price">{item.price} ASR</h4>
                                                 <h4 className="product-price">{item.description} </h4>
                                                 <p className="product-remove">
                                                     <span className="remove">

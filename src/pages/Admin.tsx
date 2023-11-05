@@ -10,7 +10,7 @@ import {
 
 import AdminFooter from '../components/admin-components/AdminFooter';
 import AdminHeader from '../components/admin-components/AdminHeader';
-import AdminSidebar from '../components/admin-components/AdminSidbar';
+import AdminSidebar from '../components/admin-components/AdminSidebar';
 
 import '../style/admin.css'
 
@@ -48,7 +48,7 @@ const Admin = () => {
                     </Paper>
                 </Container>
             </Container>
-            <AdminFooter/>
+            <AdminFooter />
         </div>
     )
 }

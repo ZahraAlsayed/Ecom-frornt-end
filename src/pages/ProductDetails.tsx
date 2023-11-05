@@ -1,17 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { ChangeEvent, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, Link, useNavigate } from 'react-router-dom'
-import IconButton from '@mui/material/IconButton'
+import { useParams, useNavigate } from 'react-router-dom'
 import {
     Typography,
-    CardActionArea,
-    CardMedia,
     Button
 } from '@mui/material'
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Container from '@mui/material/Container'
 
 import { AppDispatch, RootState } from '../redux/store'
 import { findProductBId, fetchProducts, Product } from '../redux/slices/products/productSlice'
@@ -24,7 +19,7 @@ import Footer from '../components/layout/Footer'
 
 
 
-const ProductDitails = () => {
+const ProductDetails = () => {
     const { id } = useParams()
     const dispatch = useDispatch<AppDispatch>()
     const state = useSelector((state: RootState) => state)
@@ -107,7 +102,7 @@ const ProductDitails = () => {
                                 ))}
                             </span>
 
-                            <span>{product.singleProduct.prise} SAR</span>
+                            <span>{product.singleProduct.price} SAR</span>
                             <div className="description">
                                 <Typography>{product.singleProduct.description}</Typography>
                             </div>
@@ -127,4 +122,4 @@ const ProductDitails = () => {
 
     )
 }
-export default ProductDitails
+export default ProductDetails

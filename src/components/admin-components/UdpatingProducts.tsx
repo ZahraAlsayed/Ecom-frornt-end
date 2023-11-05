@@ -40,7 +40,7 @@ const initialProductState: Product = {
     categories: [],
     variants: [],
     sizes: [],
-    prise: 0
+    price: 0
 }
 
 const UpdatingProducts = () => {
@@ -48,10 +48,7 @@ const UpdatingProducts = () => {
     const state = useSelector((state: RootState) => state)
     const products = state.products
     const [product, setProduct] = useState<Product>(initialProductState)
- 
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-
-
     useEffect(() => {
         handleGetProducts()
     }, [])

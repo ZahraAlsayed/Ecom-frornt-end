@@ -233,7 +233,7 @@ const Home = () => {
                       </Typography>
 
                       <Typography gutterBottom component="div">
-                        {product.prise} SAR
+                        {product.price} SAR
                       </Typography>
 
                       <Typography variant="body2" color="text.secondary">

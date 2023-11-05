@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { createSlice } from '@reduxjs/toolkit'
-  import { toast, ToastContainer } from 'react-toastify'
-  import "react-toastify/dist/ReactToastify.css"
+import "react-toastify/dist/ReactToastify.css"
 
 import { Product } from "./productSlice";
 
@@ -11,8 +10,6 @@ const data = localStorage.getItem('cart') != null
 export type CartState = {
     cartItems: Product[];
 }
-//export const addToCart = createAction<CartItem>('ADD_TO_CART');
-//export const removeFromCart = createAction<number>('REMOVE_FROM_CART');
 
 const initialState: CartState = {
     cartItems: data,

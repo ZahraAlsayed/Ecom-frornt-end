@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 
 
-import AdminSidbar from './AdminSidbar'
+import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
 import UserList from './UsersList'
 
@@ -27,7 +27,7 @@ const ManageUsers = () => {
                     flexShrink: 0,
                 }}
             >
-                <AdminSidbar />
+                <AdminSidebar />
             </Drawer>
             <Container className="table-container">
                 <header><AdminHeader /></header>

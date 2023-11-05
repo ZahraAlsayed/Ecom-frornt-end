@@ -7,7 +7,7 @@ import {
 
 
 
-import AdminSidbar from './AdminSidbar'
+import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
 import Orders from './Orders'
 
@@ -28,7 +28,7 @@ const ManageOrders = () => {
                     flexShrink: 0,
                 }}
             >
-                <AdminSidbar />
+                <AdminSidebar />
             </Drawer>
             <Container className="table-container">
                 <header><AdminHeader /></header>

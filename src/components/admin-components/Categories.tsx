@@ -36,14 +36,10 @@ const Categories = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const { items, isLoading, error } = useSelector((state: RootState) => state.categories)
-    
-
-
     useEffect(() => {
         dispatch(fechCategories())
     }
         , [])
-    console.log(items)
 
     const handelDelete = (id: number) => {
         dispatch(deleteCategory(id))

@@ -19,7 +19,7 @@ const initialProductState: Product = {
   categories: [],
   variants: [],
   sizes: [],
-  prise: 0
+  price: 0
 }
 export function ProductForm() {
   const dispatch = useDispatch<AppDispatch>()

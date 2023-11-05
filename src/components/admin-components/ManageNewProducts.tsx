@@ -5,7 +5,7 @@ import {
     Drawer
 } from '@mui/material'
 
-import AdminSidbar from './AdminSidbar'
+import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
 import ProductsManager from '../ProductsManager'
 
@@ -26,7 +26,7 @@ const ManageNewProdcuts = () => {
                     flexShrink: 0,
                 }}
             >
-                <AdminSidbar />
+                <AdminSidebar />
             </Drawer>
             <Container className="table-container">
                 <header><AdminHeader /></header>

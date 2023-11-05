@@ -6,7 +6,7 @@ import {
     Typography,
 } from '@mui/material'
 
-import AdminSidbar from './AdminSidbar'
+import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
 import UpdatingProducts from './UdpatingProducts'
 
@@ -26,7 +26,7 @@ const AddNewProducts = () => {
                     flexShrink: 0,
                 }}
             >
-                <AdminSidbar />
+                <AdminSidebar />
             </Drawer>
             <Container >
                 <header><AdminHeader /></header>

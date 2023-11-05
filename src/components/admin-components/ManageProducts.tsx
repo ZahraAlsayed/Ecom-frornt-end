@@ -9,7 +9,7 @@ import {
 import AddIcon from '@mui/icons-material/Add'
 
 
-import AdminSidbar from './AdminSidbar'
+import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
 import Products from './Products'
 
@@ -23,7 +23,7 @@ const ManageProducts = () => {
     const handleNavigation = () => {
         navigate("/dashboard/admin/addpoduct");
 
-    }; 
+    };
 
     return (
         <div style={{ display: 'flex' }}>
@@ -36,7 +36,7 @@ const ManageProducts = () => {
                     flexShrink: 0,
                 }}
             >
-                <AdminSidbar />
+                <AdminSidebar />
             </Drawer>
             <Container className="table-container">
                 <header><AdminHeader /></header>
