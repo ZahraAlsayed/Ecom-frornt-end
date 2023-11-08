@@ -54,8 +54,8 @@ const Categories = () => {
             const newCategory = { id: `${new Date().getTime()}-${Math.floor(Math.random() * 1000)}`, name: categoryName };
             dispatch(addCategort(newCategory))
         } else {
-            const UpdatingCategory = { id: categoryId, name: categoryName };
-            dispatch(updateCategory(UpdatingCategory))
+            const updatingCategory = { id: categoryId, name: categoryName };
+            dispatch(updateCategory(updatingCategory))
         }
 
         setCategoryName('')
