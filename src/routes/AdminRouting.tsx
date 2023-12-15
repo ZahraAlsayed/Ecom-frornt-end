@@ -14,7 +14,7 @@ const AdminRouting = () => {
 
     return (
         <>
-            {users.isLoggedIn && users.userData?.role === 'admin' ? (
+            {users.isLoggedIn && users.userData?.isAdmin === 'admin' ? (
 
                 <Outlet />
             ) : (

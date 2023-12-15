@@ -1,14 +1,21 @@
 /* eslint-disable prettier/prettier */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
+
 import api from '../../../api'
 
 export type User = {
-    id: number,
-    firstName:string,
-    lastName: string,
-    email: string,
-    password: string,
-    role: string
+  _id: string,
+  name:string,
+  email: string,
+  password: string,
+  address: string,
+  image: string,
+  phone:string,
+  isAdmin: boolean,
+  isBanned: boolean,
+  
+    
 }
 const data =
   localStorage.getItem('loginData') !== null
@@ -19,7 +26,9 @@ export type UserState = {
   error: null | string
   isLoading: boolean
   isLoggedIn: boolean
-  userData: User |null
+  userData: User | null
+  ban: boolean
+  isAdmin:boolean
   
 }
 
@@ -28,13 +37,33 @@ const initialState: UserState = {
   error: null,
   isLoading: false,
   isLoggedIn: false,
-  userData:null
+  userData: null,
+  ban: false,
+  isAdmin:false
 
 }
 export const fechUsers = createAsyncThunk('items/fechUsers', async () => {
-    const res = await api.get('/mock/e-commerce/users.json')
-    return res.data
+  const res = await api.get('/users')
+  return res.data.payload.users
 })
+
+export const registerNewUser =async (UserDeta: FormData) => {
+  const res = await api.post(`/users/process-register`,UserDeta)
+  return res.data
+}
+
+export const deleteUser =async (id: string) => {
+  const res = await api.delete(`/users/${id}`)
+  return res.data
+}
+export const baneUser =async (id: string) => {
+  const res = await api.put(`/users/ban/${id}`)
+  return res.data
+}
+export const unbaneUser =async (id: string) => {
+  const res = await api.put(`/users/unban/${id}`)
+  return res.data
+}
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -62,11 +91,6 @@ export const userSlice = createSlice({
         })
       )
     },
-       deleteUser:(state, action) =>{
-            const filterUsre= state.items.filter((user) => user.id != action.payload)
-           state.items = filterUsre
-            localStorage.setItem('users', JSON.stringify({ users: state.items }))
-        },
         addNewUser: (state, action) => {
            state.items.push(action.payload)
         }
@@ -89,6 +113,6 @@ export const userSlice = createSlice({
     }
 })
 //export const { removeProduct, addProduct, productsRequest, productsSuccess , getSreachResult ,sortProducts} = userSlice.actions
-export const { login ,deleteUser ,logout,addNewUser} = userSlice.actions
+export const { login  ,logout,addNewUser} = userSlice.actions
 
 export default userSlice.reducer

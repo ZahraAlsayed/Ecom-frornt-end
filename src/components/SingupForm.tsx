@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch, RootState } from '../redux/store';
-import { addNewUser } from '../redux/slices/userslices/userSlice';
+import { addNewUser, registerNewUser } from '../redux/slices/userslices/userSlice';
 import '../style/register.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -13,43 +14,49 @@ const Login = () => {
     const users = state.users;
 
     const [user, setUser] = useState({
-        fristName: '',
-        lastName: '',
+        name: '',
         email: '',
         password: '',
+        image: '',
+        phone: '',
+        address:''
     });
 
     const [errors, setErrors] = useState({
-        fristName: '',
-        lastName: '',
+        name: '',
         email: '',
         password: '',
+        image: '',
+        phone: '',
+        address: ''
     });
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setUser((prevState) => ({
-            ...prevState,
-            [event.target.name]: event.target.value,
-        }));
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (event.target.type === 'file') {
+            const fileInput = (event.target as HTMLInputElement) || ''
+            console.log(fileInput.files?.[0]?.name)
+            setUser((prevState) => ({
+                ...prevState,
+                [event.target.name]: fileInput.files?.[0]?.name,
+            }));
+        }
+        else {
+            setUser((prevState) => ({
+                ...prevState,
+                [event.target.name]: event.target.value,
+            }));
+        }
     };
 
     const validateForm = () => {
         const newErrors = { ...errors };
 
         // Validate fristName
-        if (!user.fristName || user.fristName.length < 2) {
-            newErrors.fristName = 'Plase Enter valid Name'
+        if (!user.name || user.name.length < 2) {
+            newErrors.name = 'Plase Enter valid Name'
         } else {
-            newErrors.fristName = '';
+            newErrors.name = '';
         }
-
-        // Validate lastName
-        if (!user.lastName || user.lastName.length < 2) {
-            newErrors.lastName = 'Plase Enter valid Name'
-        } else {
-            newErrors.lastName = '';
-        }
-
         // Validate email
         if (!user.email) {
             newErrors.email = 'Email is required';
@@ -65,6 +72,16 @@ const Login = () => {
         } else {
             newErrors.password = '';
         }
+        if (!user.address || user.address.length < 2) {
+            newErrors.name = 'Plase Enter valid address'
+        } else {
+            newErrors.name = '';
+        }
+        if (!user.phone || user.phone.length < 9) {
+            newErrors.name = 'Plase Enter valid phone number'
+        } else {
+            newErrors.name = '';
+        }
 
         setErrors(newErrors);
 
@@ -72,8 +89,15 @@ const Login = () => {
         return !Object.values(newErrors).some((error) => !!error);
     };
 
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
+        const formData = new FormData();
+        formData.append("name", user.name)
+        formData.append("email", user.email)
+        formData.append("phone", user.phone)
+        formData.append("address", user.address)
+        formData.append("imge", user.image)
+        formData.append("password", user.password)
 
         // Validate the form
         if (!validateForm()) {
@@ -84,57 +108,58 @@ const Login = () => {
         if (foundUser && foundUser.password === user.password) {
             alert('User with this email is already registered. Please log in.');
         } else {
-            dispatch(addNewUser(foundUser));
+            try {
+                const response = await registerNewUser(formData)
+                console.log(response)
+                toast.success(response.data.massage, {
+                    position: "top-right",
+                    autoClose: 3000, // Duration in milliseconds
+                });
+            } catch (error ) {
+                toast.error(error.response.data.massage, {
+                    position: "top-right",
+                    autoClose: 3000, // Duration in milliseconds
+                });
+            }
         }
 
         setUser({
-            fristName: '',
-            lastName: '',
+            name: '',
             email: '',
             password: '',
+            image: '',
+            phone: '',
+            address: ''
         });
     };
 
     return (
         <div className="center">
+            <ToastContainer position="top-right"
+                autoClose={3000} hideProgressBar={false}
+                newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <img
                 src="..\src\assets\logo-techtrove.png"
                 alt="Logo"
-                width={190}
+                width={170}
             />
             <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
                 <div className="txtfield">
                     <input
                         type="text"
-                        id="fristName"
-                        name="fristName"
-                        value={user.fristName}
+                        id="name"
+                        name="name"
+                        value={user.name}
                         onChange={handleInputChange}
                         required
                     />
                     <span></span>
-                    <label htmlFor="fristName">First Name</label>
+                    <label htmlFor="fristName">User Name</label>
                     <div >
-                        <span className="error-message">{errors.fristName}</span>
+                        <span className="error-message">{errors.name}</span>
                     </div>
                 </div >
-                <div className="txtfield">
-                    <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={user.lastName}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <span></span>
-                    <label htmlFor="lastName">Last Name</label>
-                    <div>
-                        <span className="error-message">{errors.lastName}</span>
-                    </div>
-
-                </div>
                 <div className="txtfield">
                     <input
                         type="text"
@@ -150,6 +175,44 @@ const Login = () => {
                         <span className="error-message">{errors.email}</span>
                     </div>
 
+                </div>
+                <div className="txtfield">
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={user.phone}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <span></span>
+                    <label htmlFor="password">phone Number</label>
+                    <span className="error-message">{errors.phone}</span>
+                </div>
+                <div className="txtfield">
+                    <textarea
+                        id="address"
+                        name="address"
+                        value={user.address}
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <span></span>
+                    <label htmlFor="address">Address</label>
+                    <span className="error-message">{errors.address}</span>
+                </div>
+                <div className="txtfield">
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept='image/*'
+                        onChange={handleInputChange}
+                        required
+                    />
+                    <span></span>
+                    <label htmlFor="image"></label>
+                    <span className="error-message">{errors.image}</span>
                 </div>
                 <div className="txtfield">
                     <input

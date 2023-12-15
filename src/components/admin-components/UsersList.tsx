@@ -16,24 +16,60 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import BlockIcon from '@mui/icons-material/Block';
 
 import { AppDispatch, RootState } from '../../redux/store';
-import { deleteUser, fechUsers } from '../../redux/slices/userslices/userSlice'
+import { baneUser, deleteUser, fechUsers, unbaneUser } from '../../redux/slices/userslices/userSlice'
+
 
 import '../../style/admin.css'
+import api from '../../api'
+import { ToastContainer, toast } from 'react-toastify';
 
+const baseUrl = 'http://localhost:5050/'
+console.log(baseUrl)
 const UserList = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { items, isLoading, error } = useSelector((state: RootState) => state.users);
-    
+
 
     useEffect(() => {
         dispatch(fechUsers());
     }, [])
 
-    const handelDelete = (id: number) => {
-        dispatch(deleteUser(id));
+    const handelDelete = async (id: string) => {
+        try {
+            const response = await deleteUser(id)
+            dispatch(fechUsers());
+            toast.success(`User deleted sucssfuly `, {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+        } catch (error) {
+            console.log(error.response.data.massage)
+            toast.error(error.response.data.massage, {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+        }
     };
+    const handelBanFunction = async (id: string, isBanned: boolean) => {
+        try {
+            const response = isBanned ? await unbaneUser(id) : await baneUser(id)
+            dispatch(fechUsers());
+            toast.success(response, {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+        } catch (error) {
+            console.log(error.response.data.massage)
+            toast.error(error.response.data.massage, {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+        }
+    };
+
 
     if (isLoading) {
         return <p>loding ...</p>
@@ -44,6 +80,9 @@ const UserList = () => {
 
     return (
         <div >
+            <ToastContainer position="top-right"
+                autoClose={3000} hideProgressBar={false}
+                newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <div className="table-container">
                 <Toolbar />
                 <Typography variant="h4">User List</Typography>
@@ -51,37 +90,58 @@ const UserList = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
+                                <TableCell>Image</TableCell>
                                 <TableCell>ID</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell>Email</TableCell>
+                                <TableCell>Phone Number</TableCell>
+                                <TableCell>Address</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {items.map((user) => (
-                                <TableRow key={user.id}>
-                                    <TableCell>{user.id}</TableCell>
-                                    <TableCell>{user.firstName}</TableCell>
-                                    <TableCell>{user.email}</TableCell>
-                                    <TableCell>
-                                        <IconButton color="primary" aria-label="add">
-                                            <AddIcon />
-                                        </IconButton>
-                                        <IconButton color="secondary" aria-label="edit">
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton
-                                            color="error"
-                                            aria-label="delete"
-                                            onClick={() => {
-                                                handelDelete(user.id);
-                                            }}
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {items.map((user) => {
+                                if (!user.isAdmin) {
+                                    return (
+                                        <TableRow key={user._id}>
+                                            <TableCell>
+                                                <img src={`${baseUrl}${user.image}`} alt={user.name} width={20} />
+                                            </TableCell>
+                                            <TableCell>{user._id}</TableCell>
+                                            <TableCell>{user.name}</TableCell>
+                                            <TableCell>{user.email}</TableCell>
+                                            <TableCell>{user.phone}</TableCell>
+                                            <TableCell>{user.address}</TableCell>
+                                            <TableCell>
+                                                <IconButton color="primary" aria-label="add">
+                                                    <AddIcon sx={{ fontSize: 20 }} />
+                                                </IconButton>
+                                                <IconButton color="secondary" aria-label="edit">
+                                                    <EditIcon sx={{ fontSize: 20 }} />
+                                                </IconButton>
+                                                <IconButton
+                                                    color="error"
+                                                    aria-label="delete"
+                                                    onClick={() => {
+                                                        handelDelete(user._id);
+                                                    }}
+                                                >
+                                                    <DeleteIcon sx={{ fontSize: 20 }} />
+                                                </IconButton>
+                                                <IconButton aria-label="ban"
+                                                    onClick={() => {
+                                                        handelBanFunction(user._id, user.isBanned);
+                                                    }}>
+                                                    {user.isBanned ? 'unban' : 'ban'}
+                                                    <BlockIcon sx={{ fontSize: 15, color: '#EC2A2A' }} />
+                                                </IconButton>
+                                            </TableCell>
+
+                                        </TableRow>
+                                    )
+                                }
+                            })}
+
                         </TableBody>
                     </Table>
                 </TableContainer>

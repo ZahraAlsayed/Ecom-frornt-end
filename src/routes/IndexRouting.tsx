@@ -36,7 +36,7 @@ function IndexRouting() {
                 <Route path='/cart' element={<Cart />} />
 
 
-                <Route path="/dashboard" element={<AdminRouting />}>
+                {/* <Route path="/dashboard" element={<AdminRouting />}> */}
                     <Route path="/dashboard/admin" element={<Admin />} />
                     <Route path="/dashboard/admin/categories" element={<ManageCategory />} />
                     <Route path="/dashboard/admin/products" element={<ManageProducts />} />
@@ -44,7 +44,7 @@ function IndexRouting() {
                     <Route path="/dashboard/admin/orders" element={<ManageOrders />} />
                     <Route path="/dashboard/admin/addpoduct" element={<AddNewProducts />} />
                     <Route path="/dashboard/admin/profile" element={<AdminProfile />} />
-                </Route>
+                {/* </Route> */}
 
                 <Route path="/*" element={<Error />} />
 

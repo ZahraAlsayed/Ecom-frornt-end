@@ -165,7 +165,7 @@ const Home = () => {
         <div className="sort-dropdown">
           <select id="sort" name='sort' onChange={handleSort}>
             <option value="name">Sort by</option>
-            <option value="prise" defaultValue='price'>Prise</option>
+            <option value="prise" defaultValue='price'>Price</option>
             <option value="name">name</option>
           </select>
         </div>
