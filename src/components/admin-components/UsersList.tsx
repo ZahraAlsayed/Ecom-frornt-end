@@ -35,19 +35,17 @@ const UserList = () => {
 
     useEffect(() => {
         dispatch(fechUsers());
-    }, [])
+    }, [dispatch])
 
     const handelDelete = async (id: string) => {
         try {
-            const response = await deleteUser(id)
-            dispatch(fechUsers());
+             dispatch(deleteUser(id))
             toast.success(`User deleted sucssfuly `, {
                 position: "top-right",
                 autoClose: 3000, // Duration in milliseconds
             });
         } catch (error) {
-            console.log(error.response.data.massage)
-            toast.error(error.response.data.massage, {
+            toast.error('Somting Wrong ', {
                 position: "top-right",
                 autoClose: 3000, // Duration in milliseconds
             });
@@ -55,9 +53,9 @@ const UserList = () => {
     };
     const handelBanFunction = async (id: string, isBanned: boolean) => {
         try {
-            const response = isBanned ? await unbaneUser(id) : await baneUser(id)
-            dispatch(fechUsers());
-            toast.success(response, {
+            const response = isBanned ? dispatch(unbaneUser(id)) : dispatch(baneUser(id))
+            //dispatch(fechUsers());
+            toast.success("response.data.massage", {
                 position: "top-right",
                 autoClose: 3000, // Duration in milliseconds
             });

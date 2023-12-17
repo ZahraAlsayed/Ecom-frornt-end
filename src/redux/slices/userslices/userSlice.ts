@@ -44,26 +44,22 @@ const initialState: UserState = {
 }
 export const fechUsers = createAsyncThunk('items/fechUsers', async () => {
   const res = await api.get('/users')
-  return res.data.payload.users
+  return res.data
+})
+export const deleteUser = createAsyncThunk('items/deleteUser',async(id: string) => {
+   await api.delete<User[]>(`/users/${id}`)
+  return id
+})
+export const baneUser = createAsyncThunk('items/baneUser',async(id: string)=>{
+  const res = await api.put<User[]>(`/users/ban/${id}`)
+ return id
+})
+export const unbaneUser = createAsyncThunk('items/unbaneUser',async(id: string)=>{
+  const res = await api.put<User[]>(`/users/unban/${id}`)
+  return id
+  
 })
 
-export const registerNewUser =async (UserDeta: FormData) => {
-  const res = await api.post(`/users/process-register`,UserDeta)
-  return res.data
-}
-
-export const deleteUser =async (id: string) => {
-  const res = await api.delete(`/users/${id}`)
-  return res.data
-}
-export const baneUser =async (id: string) => {
-  const res = await api.put(`/users/ban/${id}`)
-  return res.data
-}
-export const unbaneUser =async (id: string) => {
-  const res = await api.put(`/users/unban/${id}`)
-  return res.data
-}
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -93,22 +89,49 @@ export const userSlice = createSlice({
     },
         addNewUser: (state, action) => {
            state.items.push(action.payload)
+      },
+        deleteUser: (state, action) => {
+           state.items.push(action.payload)
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fechUsers.pending, (state) => {
-                state.isLoading = true
-                state.error = null
-            })
             .addCase(fechUsers.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.error = null
-                state.items = action.payload
+              state.error = null
+              console.log(action.payload)
+                state.items = action.payload.payload.users
             })
-            .addCase(fechUsers.rejected, (state, action) => {
-                state.isLoading = false
-                state.error = action.error.message || "There is something wrong "
+            .addCase(deleteUser.fulfilled, (state, action) => {
+              state.items = state.items.filter(user => user._id == action.payload)
+              state.isLoading = false
+              state.error = null
+            })
+            .addCase(baneUser.fulfilled, (state, action) => {
+              const foundUser = state.items.find(user => user._id == action.payload)
+              if (foundUser) {
+                foundUser.isBanned=true
+              }
+              state.isLoading = false
+              state.error = null
+            })
+          .addCase(unbaneUser.fulfilled, (state, action) => {
+              const foundUser = state.items.find(user => user._id == action.payload)
+              if (foundUser) {
+                foundUser.isBanned= false
+              }
+              state.isLoading = false
+              state.error = null
+            })
+      builder.addMatcher((action) => action.type.endsWith('/pending'),
+        (state) => {
+          state.isLoading = true
+          state.error = null
+        })
+      builder.addMatcher((action) => action.type.endsWith('/rejected'),
+        (state,action) => {
+          state.isLoading = false
+          state.error = action.error.message || "There is something wrong "
             })
     }
 })

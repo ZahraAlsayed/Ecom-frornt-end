@@ -4,21 +4,22 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import api from '../../../api'
 
 export type Product = {
-  id: number
-  name: string
+  _id: string
+  title: string
   image: string
   description: string
-  categories: number[]
-  variants: string[]
-  sizes: string[]
-  price : number
+  slug: string,
+  quantity: number
+  sold: number
+  price: number
+  category: string[]
 }
 
 export type ProductState = {
   items: Product[]
   error: null | string
   isLoading: boolean
-   searchingTerm: string
+  searchingTerm: string
   singleProduct: Product 
 
 }
@@ -30,11 +31,17 @@ const initialState: ProductState = {
    searchingTerm: "",
   singleProduct: {} as Product 
 }
-export const fetchProducts = createAsyncThunk('items/fetchProducst', async () => {
-    const res = await api.get('/mock/e-commerce/products.json');
-    return res.data;
+export const fetchProducts = createAsyncThunk('items/fetchProducsts', async () => {
+  const res = await api.get('/products');
+  console.log(res.data)
+    return res.data
     
 });
+export const deleteProduct = createAsyncThunk('items/deleteProduct',async(slug: string) => {
+  await api.delete(`/products/${slug}`)
+  return slug
+})
+
 
 export const productSlice = createSlice({
   name: 'product',
@@ -43,20 +50,20 @@ export const productSlice = createSlice({
     productsRequest: (state) => {
       state.isLoading = true
     },
-    productsSuccess: (state, action) => {
-      state.isLoading = false
-      state.items = action.payload
-    },
+    // productsSuccess: (state, action) => {
+    //   state.isLoading = false
+    //   state.items = action.payload.payload.products
+    // },
     addProduct: (state, action: { payload: { product: Product } }) => {
       // let's append the new product to the beginning of the array
       state.items = [action.payload.product, ...state.items]
     },
-    removeProduct: (state, action: { payload: { productId: number } }) => {
-      const filteredItems = state.items.filter((product) => product.id !== action.payload.productId)
-      state.items = filteredItems
-    },
+    // removeProduct: (state, action: { payload: { productId: number } }) => {
+    //   const filteredItems = state.items.filter((product) => product._id !== action.payload)
+    //   state.items = filteredItems
+    // },
     updateProduct: (state, action:  PayloadAction<Product>) => {
-       const index = state.items.findIndex((product) => product.id === action.payload.id);
+       const index = state.items.findIndex((product) => product._id === action.payload._id);
 
       if (index !== -1) {
         state.items[index] = action.payload;
@@ -69,7 +76,7 @@ export const productSlice = createSlice({
     sortProducts:(state ,action)=>{
       const sortingInput =action.payload;
       if(sortingInput === 'name'){
-        state.items.sort((a,b)=>a.name.localeCompare(b.name) )
+        state.items.sort((a,b)=>a.title.localeCompare(b.title) )
       }
       else if(sortingInput === 'prise'){
         state.items.sort((a,b)=>a.price -b.price )
@@ -77,7 +84,7 @@ export const productSlice = createSlice({
     },
     findProductBId: (state, action) => {
             const id=action.payload
-            const productFound = state.items.find((product) => product.id == id)
+            const productFound = state.items.find((product) => product._id == id)
             if (productFound) {
                 state.singleProduct = productFound
             }
@@ -87,21 +94,28 @@ export const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-      })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false
-        state.items = action.payload
+        console.log(action.payload)
+        state.items = action.payload.payload.products
       })
-      .addCase(fetchProducts.rejected, (state, action) => {
-        state.isLoading = false
-        state.error = action.error.message || 'Failed to fetch Products.'
+    .addCase(deleteProduct.fulfilled, (state, action) => {
+      state.items = state.items.filter(product => product.slug == action.payload)
+      state.isLoading = false
       })
+      builder.addMatcher((action) => action.type.endsWith('/pending'),
+        (state) => {
+          state.isLoading = true
+          state.error = null
+        })
+      builder.addMatcher((action) => action.type.endsWith('/rejected'),
+        (state,action) => {
+          state.isLoading = false
+          state.error = action.error.message || "There is something wrong "
+            })
   }
 })
-export const { removeProduct, addProduct, productsRequest, productsSuccess ,getSreachResult,
+export const { addProduct, productsRequest ,getSreachResult,
   sortProducts ,findProductBId,updateProduct} = productSlice.actions
 
 export default productSlice.reducer

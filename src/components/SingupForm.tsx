@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppDispatch, RootState } from '../redux/store';
-import { addNewUser, registerNewUser } from '../redux/slices/userslices/userSlice';
 import '../style/register.css';
 import { ToastContainer, toast } from 'react-toastify';
+import { registerNewUser } from '../services/userServices';
 
 const Login = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -37,7 +37,7 @@ const Login = () => {
             console.log(fileInput.files?.[0]?.name)
             setUser((prevState) => ({
                 ...prevState,
-                [event.target.name]: fileInput.files?.[0]?.name,
+                [event.target.name]: fileInput.files?.[0],
             }));
         }
         else {

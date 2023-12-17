@@ -21,6 +21,8 @@ import Login from '../components/Login';
 import AdminRouting from './AdminRouting';
 import ManageUsers from '../components/admin-components/ManageUsers';
 import AdminProfile from '../components/admin-components/Profile';
+import ActivateUser from '../pages/ActivatePage';
+import ActivatePage from '../pages/ActivatePage';
 
 
 function IndexRouting() {
@@ -32,6 +34,7 @@ function IndexRouting() {
                 <Route path='/' element={<Home />} />
                 <Route path='/product/:id' element={<ProductDetails />} />
                 <Route path='/singup' element={<SingupForm />} />
+                <Route path='/users/activate/:token' element={<ActivatePage/>} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/cart' element={<Cart />} />
 
@@ -42,7 +45,7 @@ function IndexRouting() {
                     <Route path="/dashboard/admin/products" element={<ManageProducts />} />
                     <Route path="/dashboard/admin/users" element={<ManageUsers />} />
                     <Route path="/dashboard/admin/orders" element={<ManageOrders />} />
-                    <Route path="/dashboard/admin/addpoduct" element={<AddNewProducts />} />
+                    {/* <Route path="/dashboard/admin/addpoduct" element={<AddNewProducts />} /> */}
                     <Route path="/dashboard/admin/profile" element={<AdminProfile />} />
                 {/* </Route> */}
 

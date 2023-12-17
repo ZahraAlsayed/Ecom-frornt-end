@@ -16,10 +16,11 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import {
   productsRequest,
-  productsSuccess,
+ 
   getSreachResult,
   sortProducts,
   Product,
+  fetchProducts,
 } from '../redux/slices/products/productSlice'
 import { AppDispatch, RootState } from '../redux/store'
 
@@ -37,32 +38,33 @@ const Home = () => {
   const state = useSelector((state: RootState) => state)
   const products = state.products
   const categories = state.categories
-  const [checkedCategories, setCheckedCategories] = useState<number[]>([])
+  const [checkedCategories, setCheckedCategories] = useState<string[]>([])
   const [currentPage, setCurrnetPage] = useState(1)
   const [itemsPerPage, setitemsPerPage] = useState(6)
 
+  const baseUrl = 'http://localhost:5050/'
 
   useEffect(() => {
-    handleGetProducts()
-  }, [])
+    dispatch(fetchProducts());
+  }, [dispatch])
 
-  console.log(categories.items)
+  //console.log(categories.items)
   /**
   * If you want to keep things simple you can follow this approach on updating
   * redux state when using async requests instead of using createAsyncThunk
   */
-  const handleGetProducts = async () => {
+ 
     // let's first turn the loader to true so we can have a better UX
-    dispatch(productsRequest())
+    //dispatch(productsRequest())
 
     // Fetching from the local files
-    const res = await api.get('/mock/e-commerce/products.json')
+    // const res = await api.get('/mock/e-commerce/products.json')
     // At this point we have the data so let's update the store
-    dispatch(productsSuccess(res.data))
-  }
+  //   dispatch(productsSuccess(res.data))
+  // }
   const handelAddToCart = (product: Product) => {
     dispatch(addToCart(product))
-    toast.success(`${product.name} added to cart`, {
+    toast.success(`${product.title} added to cart`, {
       position: "top-right",
       autoClose: 3000, // Duration in milliseconds
     });
@@ -72,13 +74,13 @@ const Home = () => {
   const filteredProducts = products.items.filter((product) => {
     const selectedCategories =
       checkedCategories.length > 0
-        ? checkedCategories.some((id) => product.categories.includes(Number(id)))
+        ? checkedCategories.some((id) => product.category.includes(String(id)))
 
         : product
 
     const searchValue =
       products.searchingTerm != ''
-        ? product.name.toLowerCase().includes(products.searchingTerm.toLowerCase().toLowerCase())
+        ? product.title.toLowerCase().includes(products.searchingTerm.toLowerCase().toLowerCase())
 
         : product
 
@@ -110,7 +112,7 @@ const Home = () => {
     const sortingOption = event.target.value;
     dispatch(sortProducts(sortingOption));
   }
-  const handleCategoryChange = (categoryId: number) => {
+  const handleCategoryChange = (categoryId: string) => {
     if (checkedCategories.includes(categoryId)) {
       // Category is already selected, so unselect it
       setCheckedCategories(checkedCategories.filter(id => id !== categoryId));
@@ -180,7 +182,7 @@ const Home = () => {
                 type="checkbox"
                 value={category.name}
                 name='category'
-                onChange={() => handleCategoryChange(category.id)}
+                // onChange={() => handleCategoryChange(category.id)}
               />
               {category.name}
             </label>
@@ -192,7 +194,7 @@ const Home = () => {
         <Container  >
           <Grid container item spacing={{ xs: 4, md: 4 }} alignItems='center'>
             {currentIrem.map((product) => (
-              <Grid key={product.id}
+              <Grid key={product._id}
                 item xs={10}
                 sm={5} md={4}
                 lg={4}
@@ -215,21 +217,21 @@ const Home = () => {
                       sizes='small'
                       component="img"
                       height="140"
-                      image={product.image}
-                      alt={product.name}
+                      image={`${baseUrl}${product.image}`}
+                      alt={product.title}
 
                     />
                     <CardContent>
                       <Typography >
                         <p className='category' >
-                          Categories :
-                          {product.categories.map((categoryId) =>
+                          {/* Categories :
+                          {product.category.map((categoryId) =>
                             getCategoryName(Number(categoryId))
-                          )}
+                          )} */}
                         </p>
                       </Typography>
                       <Typography gutterBottom variant="h5" component="div">
-                        {product.name}
+                        {product.title}
                       </Typography>
 
                       <Typography gutterBottom component="div">
@@ -244,7 +246,7 @@ const Home = () => {
                       <AddShoppingCartIcon fontSize="small" />
                     </IconButton>
 
-                    <Link to={`/product/${product.id}`}>
+                    <Link to={`/product/${product._id}`}>
                       <Button size='small' >Show details</Button>
                     </Link>
                   </CardActionArea>

@@ -64,7 +64,7 @@ const Login = () => {
 
         if (foundUser && foundUser.password === user.password) {
             dispatch(login(foundUser))
-            if (foundUser.role === 'admin') {
+            if (foundUser.isAdmin === true) {
                 navigate('/dashboard/admin')
             }
             else {

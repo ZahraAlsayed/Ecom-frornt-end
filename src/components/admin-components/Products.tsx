@@ -18,8 +18,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { AppDispatch, RootState } from '../../redux/store'
 import {
+    deleteProduct,
+    fetchProducts,
     productsRequest,
-    productsSuccess,
+    
     removeProduct,
 
 } from '../../redux/slices/products/productSlice'
@@ -27,8 +29,10 @@ import {
 import api from '../../api'
 
 import '../../style/admin.css'
+import { toast } from 'react-toastify';
 
 
+const baseUrl = 'http://localhost:5050/'
 
 
 const Products = () => {
@@ -37,22 +41,36 @@ const Products = () => {
     const products = state.products
 
     useEffect(() => {
-        handleGetProducts()
-    }, [])
-
+        dispatch(fetchProducts());
+    }, [dispatch])
     /**
     * If you want to keep things simple you can follow this approach on updating
     * redux state when using async requests instead of using createAsyncThunk
     */
-    const handleGetProducts = async () => {
-        // let's first turn the loader to true so we can have a better UX
-        dispatch(productsRequest())
+    // const handleGetProducts = async () => {
+    //     // let's first turn the loader to true so we can have a better UX
+    //     dispatch(productsRequest())
 
-        // Fetching from the local files
-        const res = await api.get('/mock/e-commerce/products.json')
-        // At this point we have the data so let's update the store
-        dispatch(productsSuccess(res.data))
-    }
+    //     // Fetching from the local files
+    //     const res = await api.get('/products')
+    //     // At this point we have the data so let's update the store
+    //     console.log(res.data)
+    //     dispatch(productsSuccess(res.data.payload.products))
+    // }
+    const handelDelete = async (slug: string) => {
+        try {
+            dispatch(deleteProduct(slug))
+            toast.success(`Product deleted sucssfuly `, {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+        } catch (error) {
+            toast.error('Somting Wrong ', {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+        }
+    };
 
     return (
         <div >
@@ -70,16 +88,19 @@ const Products = () => {
                         </TableHead>
                         <TableBody>
                             {products.items.map((product) => (
-                                <TableRow key={product.id}>
-                                    <TableCell>{product.id}</TableCell>
-                                    <TableCell>{product.name}</TableCell>
-                                    <TableCell><img src={product.image} alt={product.name} width={60} /></TableCell>
+                                <TableRow key={product._id}>
+                                    <TableCell>{product._id}</TableCell>
+                                    <TableCell>{product.title}</TableCell>
+                                    <TableCell><img src={`${baseUrl}${product.image}`} alt={product.title} width={60} /></TableCell>
                                     <TableCell>
                                         <IconButton color="secondary" aria-label="edit">
                                             <EditIcon />
                                         </IconButton>
-                                        <IconButton color="error" aria-label="delete">
-                                            <DeleteIcon onClick={() => dispatch(removeProduct({ productId: product.id }))} />
+                                        <IconButton color="error" aria-label="delete"
+                                            >
+                                            <DeleteIcon onClick={() => {
+                                                handelDelete(product.slug);
+                                            }} />
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
