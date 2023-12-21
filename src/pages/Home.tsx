@@ -16,7 +16,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import {
   productsRequest,
- 
+
   getSreachResult,
   sortProducts,
   Product,
@@ -24,13 +24,14 @@ import {
 } from '../redux/slices/products/productSlice'
 import { AppDispatch, RootState } from '../redux/store'
 
-import api from '../api'
+import api, { baseURL } from '../api'
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import ImageSlider from '../components/layout/ImageSlider'
 import { addToCart } from '../redux/slices/products/cartSlice'
 
 import '../style/home.css'
+import { fechCategories } from '../redux/slices/products/categorySlice'
 
 
 const Home = () => {
@@ -42,26 +43,18 @@ const Home = () => {
   const [currentPage, setCurrnetPage] = useState(1)
   const [itemsPerPage, setitemsPerPage] = useState(6)
 
-  const baseUrl = 'http://localhost:5050/'
+
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch])
 
-  //console.log(categories.items)
-  /**
-  * If you want to keep things simple you can follow this approach on updating
-  * redux state when using async requests instead of using createAsyncThunk
-  */
- 
-    // let's first turn the loader to true so we can have a better UX
-    //dispatch(productsRequest())
+  useEffect(() => {
+    dispatch(fechCategories());
+  },)
 
-    // Fetching from the local files
-    // const res = await api.get('/mock/e-commerce/products.json')
-    // At this point we have the data so let's update the store
-  //   dispatch(productsSuccess(res.data))
-  // }
+  //console.log(categories.items)
+
   const handelAddToCart = (product: Product) => {
     dispatch(addToCart(product))
     toast.success(`${product.title} added to cart`, {
@@ -103,10 +96,11 @@ const Home = () => {
     setCurrnetPage(newPage);
   };
 
-  const getCategoryName = (categoryId: number) => {
-    const categoryItem = categories.items.find((category) => category.id == categoryId)
+  const getCategoryName = (categoryId: string) => {
+    const categoryItem = categories.items.find((category) => category._id == categoryId)
     return categoryItem ? categoryItem.name + '  ' + "  " : "Category not found"
   }
+  console.log(products.items)
 
   const handleSort = (event: ChangeEvent<HTMLSelectElement>) => {
     const sortingOption = event.target.value;
@@ -176,13 +170,13 @@ const Home = () => {
       <div className='categories'>
         <span>Filter by </span>
         {categories.items.map(category => (
-          <div key={category.id} className='categories-box'>
+          <div key={category._id} className='categories-box'>
             <label htmlFor='category'>
               <input
                 type="checkbox"
                 value={category.name}
                 name='category'
-                // onChange={() => handleCategoryChange(category.id)}
+                onChange={() => handleCategoryChange(category._id)}
               />
               {category.name}
             </label>
@@ -217,18 +211,17 @@ const Home = () => {
                       sizes='small'
                       component="img"
                       height="140"
-                      image={`${baseUrl}${product.image}`}
+                      image={`${baseURL}${product.image}`}
                       alt={product.title}
 
                     />
                     <CardContent>
                       <Typography >
-                        <p className='category' >
-                          {/* Categories :
+                        {/* <p className='category' >
                           {product.category.map((categoryId) =>
-                            getCategoryName(Number(categoryId))
-                          )} */}
-                        </p>
+                            getCategoryName(categoryId)
+                          )}
+                        </p> */}
                       </Typography>
                       <Typography gutterBottom variant="h5" component="div">
                         {product.title}
@@ -246,7 +239,7 @@ const Home = () => {
                       <AddShoppingCartIcon fontSize="small" />
                     </IconButton>
 
-                    <Link to={`/product/${product._id}`}>
+                    <Link to={`${baseURL}/products/${product.slug}`}>
                       <Button size='small' >Show details</Button>
                     </Link>
                   </CardActionArea>

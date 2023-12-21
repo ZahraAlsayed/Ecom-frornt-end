@@ -23,8 +23,8 @@ const ActivatePage = () => {
             });
             navigate('/login')
         } catch (error) {
-            console.log(error.response.data.massage)
-            toast.error(error.response.data.massage, {
+           
+            toast.error("error.response.data.massage", {
                 position: "top-right",
                 autoClose: 3000, // Duration in milliseconds
             });

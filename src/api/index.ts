@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const isDevelopment = import.meta.env.MODE === 'development'
-let baseURL = 'http://localhost:5050/'
+export let baseURL = 'http://localhost:5050/'
 
 if (!isDevelopment) {
   // Update this later when you have a working backend server
@@ -11,4 +11,5 @@ if (!isDevelopment) {
 const api = axios.create({
   baseURL
 })
+api.defaults.withCredentials = true
 export default api

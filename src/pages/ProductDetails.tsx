@@ -9,7 +9,7 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { AppDispatch, RootState } from '../redux/store'
-import { findProductBId, fetchProducts, Product } from '../redux/slices/products/productSlice'
+import { findProductBId, fetchProducts, Product, fetchProduct } from '../redux/slices/products/productSlice'
 import { addToCart } from '../redux/slices/products/cartSlice'
 import Header from '../components/layout/Header'
 import { ToastContainer, toast } from 'react-toastify'
@@ -20,7 +20,7 @@ import Footer from '../components/layout/Footer'
 
 
 const ProductDetails = () => {
-    const { id } = useParams()
+    const { slug} = useParams()
     const dispatch = useDispatch<AppDispatch>()
     const state = useSelector((state: RootState) => state)
     const product = state.products
@@ -35,31 +35,31 @@ const ProductDetails = () => {
     useEffect(() => {
 
         if (product.items.length > 0) {
-            dispatch(findProductBId(Number(id)))
+            dispatch(fetchProduct(slug))
         } else {
             // if there were no products in the store, fetch them and then find the product by ID
-            dispatch(fetchProducts()).then(() => dispatch(findProductBId(Number(id))))
+            dispatch(fetchProducts()).then(() => dispatch(findProductBId(slug)))
         }
-    }, [id, product.items, dispatch])
+    }, [slug, product.items, dispatch])
 
-    const getCategoryName = (categoryId: number) => {
-        const categoryItem = categories.items.find((category) => category.id == categoryId)
+    const getCategoryName = (categoryId: string) => {
+        const categoryItem = categories.items.find((category) => category._id == categoryId)
         return categoryItem ? categoryItem.name + '  ' + "  " : "Category not found"
     }
     const handelAddToCart = (product: Product) => {
         dispatch(addToCart(product))
-        toast.success(`${product.name} added to cart`, {
+        toast.success(`${product} added to cart`, {
             position: "top-right",
             autoClose: 3000, // Duration in milliseconds
         });
     }
 
-    if (product.isLoading) {
-        return <p>loding ...</p>
-    }
-    if (product.error) {
-        return <p>{product.error}</p>
-    }
+    // if (product.isLoading) {
+    //     return <p>loding ...</p>
+    // }
+    // if (product.error) {
+    //     return <p>{product.error}</p>
+    // }
     console.log(product.singleProduct)
 
     return (
@@ -78,19 +78,19 @@ const ProductDetails = () => {
                         <div className="images">
                             <span onClick={handleNavigation} ><ArrowBackIcon /></span>
                             <div className="img-holder active">
-                                <img src={product.singleProduct.image} alt={product.singleProduct.name} />
+                                <img src={product.singleProduct.image} alt={product.singleProduct.title} />
                             </div>
                         </div>
                         <div className="basic-info">
-                            <h2>{product.singleProduct.name}</h2>
+                            <h2>{product.singleProduct.title}</h2>
                             <Typography  >
                                 Categories :
-                                {product.singleProduct.categories?.map((categoryId) =>
-                                    getCategoryName(Number(categoryId))
+                                {product.singleProduct.category?.map((categoryId) =>
+                                    getCategoryName(categoryId)
                                 )}
                             </Typography>
 
-                            <span>
+                            {/* <span>
                                 {product.singleProduct.sizes?.map((size) => (
                                     <Typography className='category' key={size}>{size}</Typography>
                                 ))}
@@ -100,7 +100,7 @@ const ProductDetails = () => {
                                     <Typography className='category' key={variant}>{variant} </Typography>
 
                                 ))}
-                            </span>
+                            </span> */}
 
                             <span>{product.singleProduct.price} SAR</span>
                             <div className="description">

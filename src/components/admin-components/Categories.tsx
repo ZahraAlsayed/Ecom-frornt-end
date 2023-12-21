@@ -21,58 +21,80 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 import { AppDispatch, RootState } from '../../redux/store'
 import {
+    createCategory,
+    deletecaregoy,
     fechCategories,
-    deleteCategory,
-    addCategort,
-    updateCategory
+    updateCategory,
 } from '../../redux/slices/products/categorySlice';
 
 import '../../style/table.css'
+import { toast } from 'react-toastify';
 
 const Categories = () => {
     const [categoryName, setCategoryName] = useState('')
     const [isEdit, setEditValue] = useState(false)
-    const [categoryId, setCategoryId] = useState(0)
+    const [categoryId, setCategoryId] = useState('')
 
     const dispatch = useDispatch<AppDispatch>()
-    const { items, isLoading, error } = useSelector((state: RootState) => state.categories)
+    const categories = useSelector((state: RootState) => state.categories)
     useEffect(() => {
         dispatch(fechCategories())
     }
-        , [])
+        , [dispatch])
 
-    const handelDelete = (id: number) => {
-        dispatch(deleteCategory(id))
+    const handelDelete = (id: string) => {
+        try {
+            dispatch(deletecaregoy(id))
+            toast.success(`Category deleted sucssfuly `, {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+        } catch (error) {
+            toast.error('Somting Wrong ', {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+        }
     }
     const handelChange = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.value)
         setCategoryName(event.target.value)
     }
-    
+
     const handelSubmit = (event: FormEvent) => {
         event.preventDefault()
         if (!isEdit) {
-            const newCategory = { id: `${new Date().getTime()}-${Math.floor(Math.random() * 1000)}`, name: categoryName };
-            dispatch(addCategort(newCategory))
+            dispatch(createCategory(categoryName))
+            toast.success(`Category created sucssfuly `, {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
         } else {
-            const updatingCategory = { id: categoryId, name: categoryName };
-            dispatch(updateCategory(updatingCategory))
+           // const updatingCategory = { id: categoryId, name: categoryName };
+            dispatch(updateCategory({ _id: categoryId, name: categoryName }))
+            toast.success(`Category updated sucssfuly `, {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+            setCategoryName('')
+            setEditValue(false)
         }
 
         setCategoryName('')
 
     }
-    const handelEidtCategory = (id: number, name: string) => {
+    const handelEidtCategory = (id: string, name: string) => {
         setCategoryId(id)
         setEditValue(true)
         setCategoryName(name)
     }
 
-    if (isLoading) {
-        return <p>loding ...</p>
-    }
-    if (error) {
-        return <p>{error}</p>
-    }
+    // if (isLoading) {
+    //     return <p>loding ...</p>
+    // }
+    // if (error) {
+    //     return <p>{error}</p>
+    // }
 
     return (
         <div className='contant'>
@@ -92,28 +114,27 @@ const Categories = () => {
                     type="text" name="category" placeholder='add New Category'
                     value={categoryName} onChange={handelChange} />
                 <span> <button>{isEdit ? 'Update' : 'Add'}</button></span>
+                {/* <span> <button type="submit">add</button></span> */}
             </form>
             <div className="table-container">
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>ID</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {items.map((category) => (
-                                <TableRow key={category.id}>
-                                    <TableCell>{category.id}</TableCell>
+                            {categories.items.map((category) => (
+                                <TableRow key={category._id}>
                                     <TableCell>{category.name}</TableCell>
                                     <TableCell>
-                                        <IconButton color="secondary" aria-label="edit" onClick={() => { handelEidtCategory(category.id, category.name) }}>
-                                            <EditIcon />
-                                        </IconButton>
+                                         <IconButton color="secondary" aria-label="edit" onClick={() => { handelEidtCategory(category._id, category.name) }}>
+                                        <EditIcon />
+                                        </IconButton> 
                                         <IconButton color="error" aria-label="delete" onClick={() => {
-                                            handelDelete(category.id)
+                                            handelDelete(category._id)
                                         }}>
                                             <DeleteIcon />
                                         </IconButton>

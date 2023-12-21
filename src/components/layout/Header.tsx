@@ -8,12 +8,17 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import CartIcon from './CartIcon'
 import '../../style/header.css'
+import { logout } from '../../redux/slices/userslices/userSlice';
 
 const Header = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const { cartItems } = useSelector((state: RootState) => state.cart)
-    const { isLoggedIn } = useSelector((state: RootState) => state.users)
+    const {isLoggedIn}  = useSelector((state: RootState) => state.users)
+    const handelLogout = () => {
+        dispatch(logout())
+
+    }
     return (
         <div>
             <header className="header">
@@ -45,7 +50,7 @@ const Header = () => {
 
                     <div className="header__option">
                         {isLoggedIn ? (
-                            <Link to={'/login'} className='linktext'>
+                            <Link to={'/login'} className='linktext' onClick={handelLogout}>
                                 <span className="header__optionLineTwo"> <ExitToAppIcon fontSize="small" /></span>
                             </Link>
                         ) : (

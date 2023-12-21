@@ -23,11 +23,10 @@ import { baneUser, deleteUser, fechUsers, unbaneUser } from '../../redux/slices/
 
 
 import '../../style/admin.css'
-import api from '../../api'
+import api, { baseURL } from '../../api'
 import { ToastContainer, toast } from 'react-toastify';
 
-const baseUrl = 'http://localhost:5050/'
-console.log(baseUrl)
+
 const UserList = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { items, isLoading, error } = useSelector((state: RootState) => state.users);
@@ -103,7 +102,7 @@ const UserList = () => {
                                     return (
                                         <TableRow key={user._id}>
                                             <TableCell>
-                                                <img src={`${baseUrl}${user.image}`} alt={user.name} width={20} />
+                                                <img src={user.image} alt={user.name} width={20} />
                                             </TableCell>
                                             <TableCell>{user._id}</TableCell>
                                             <TableCell>{user.name}</TableCell>

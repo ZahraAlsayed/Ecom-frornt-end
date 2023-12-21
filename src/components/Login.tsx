@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, FormEvent, ChangeEvent } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
 
-import { login } from '../redux/slices/userslices/userSlice';
+import { fechUsers, login } from '../redux/slices/userslices/userSlice';
 import '../style/register.css'
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -12,7 +13,7 @@ const Login = () => {
     const dispatch = useDispatch<AppDispatch>()
     const state = useSelector((state: RootState) => state)
     const users = state.users
-
+    
     const navigate = useNavigate()
     const [user, setUser] = useState({
         email: '',
@@ -23,6 +24,10 @@ const Login = () => {
         email: '',
         password: '',
     })
+   
+    useEffect(() => {
+        dispatch(fechUsers());
+    }, [dispatch])
 
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -54,27 +59,66 @@ const Login = () => {
         // Return true if there are no errors, indicating the form is valid
         return !Object.values(newErrors).some((error) => !!error);
     }
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit =(event: FormEvent) => {
         event.preventDefault()
-        if (!validateForm()) {
-            return; // If the form is not valid, do not submit.
-        }
-        const foundUser = users.items.find((userlogin) => userlogin.email.toLocaleLowerCase() === user.email.toLocaleLowerCase()
-        )
+        
 
-        if (foundUser && foundUser.password === user.password) {
-            dispatch(login(foundUser))
-            if (foundUser.isAdmin === true) {
-                navigate('/dashboard/admin')
+        try {
+            const loginInfo = {
+                email: user.email,
+                password: user.password
             }
-            else {
-                navigate('/')
+            if (!validateForm()) {
+                return; // If the form is not valid, do not submit.
             }
-            toast.success('Login successful'); // Success toast
-
-        } else {
+            dispatch(login(loginInfo))
+            console.log(users.userData)
+                if (users.userData?.isAdmin) {
+                    navigate('/dashboard/admin')
+            //     } else if (!users.userData?.isAdmin){
+            //         navigate('/')
+            // } else {
             toast.error('Invalid email or password')
         }
+            // const foundUser = users.userData?.isAdmin 
+            // console.log(users.userData)
+            // console.log(foundUser)
+            // if (users.userData?.isAdmin === true) {
+            //         navigate('/dashboard/admin')
+            //     }
+            // else {
+            //         navigate('/')
+            //     }
+            // toast.success(`Wellcome ${users.userData?.name}`); // Success toast
+
+            
+        } catch (error) {
+            console.log(error)
+        }
+       
+        // if (!validateForm()) {
+        //     return; // If the form is not valid, do not submit.
+        // }
+        // const foundUser = users.items.find((userlogin) => userlogin.email.toLocaleLowerCase() === user.email.toLocaleLowerCase()
+        // )
+
+        // if (foundUser && foundUser.password === user.password) {
+        //     dispatch(login(foundUser))
+        //     if (foundUser.isAdmin === true) {
+        //         navigate('/dashboard/admin')
+        //     }
+        //     else {
+        //         navigate('/')
+        //     }
+        //     toast.success('Login successful'); // Success toast
+
+        // } else {
+        //     toast.error('Invalid email or password')
+        // }
+        setUser({
+            email: '',
+            password: ''
+        });
 
     }
 

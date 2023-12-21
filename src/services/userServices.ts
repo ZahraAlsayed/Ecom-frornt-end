@@ -1,14 +1,23 @@
-import axios from 'axios'
-
 import api from '../api'
 
-export const registerNewUser = async (UserDeta: FormData) => {
-  const res = await api.post(`/users/process-register`, UserDeta)
-  return res.data
+export const registerNewUser = async (UserDeta: {}) => {
+  try {
+    const res = await api.post(`/users/process-register`, UserDeta)
+    console.log(UserDeta)
+    return res.data
+  } catch (error) {
+    throw new Error(`Failed to Rigster user}`)
+  }
 }
+
 export const activateUser = async (token: string) => {
-  const res = await api.post(`/users/activate`, { token })
-  return res.data
+  try {
+    const res = await api.post(`/users/activate`, { token })
+    console.log(res.data)
+    return res.data
+  } catch (error) {
+    throw new Error(`Failed to fetch users`)
+  }
 }
 
 // export const deleteUser = async (id: string) => {

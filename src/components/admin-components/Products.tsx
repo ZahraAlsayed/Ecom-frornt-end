@@ -26,13 +26,12 @@ import {
 
 } from '../../redux/slices/products/productSlice'
 
-import api from '../../api'
+import api, { baseURL } from '../../api'
 
 import '../../style/admin.css'
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 
-const baseUrl = 'http://localhost:5050/'
 
 
 const Products = () => {
@@ -74,6 +73,9 @@ const Products = () => {
 
     return (
         <div >
+            <ToastContainer position="top-right"
+                autoClose={3000} hideProgressBar={false}
+                newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <div className="table-container">
                 <Toolbar />
                 <TableContainer component={Paper}>
@@ -91,7 +93,7 @@ const Products = () => {
                                 <TableRow key={product._id}>
                                     <TableCell>{product._id}</TableCell>
                                     <TableCell>{product.title}</TableCell>
-                                    <TableCell><img src={`${baseUrl}${product.image}`} alt={product.title} width={60} /></TableCell>
+                                    <TableCell><img src={`${baseURL}${product.image}`} alt={product.title} width={60} /></TableCell>
                                     <TableCell>
                                         <IconButton color="secondary" aria-label="edit">
                                             <EditIcon />

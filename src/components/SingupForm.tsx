@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from '../redux/store';
 import '../style/register.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { registerNewUser } from '../services/userServices';
+import { fechUsers } from '../redux/slices/userslices/userSlice';
 
 const Login = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -19,7 +20,7 @@ const Login = () => {
         password: '',
         image: '',
         phone: '',
-        address:''
+        address: ''
     });
 
     const [errors, setErrors] = useState({
@@ -31,22 +32,50 @@ const Login = () => {
         address: ''
     });
 
+    useEffect(() => {
+        dispatch(fechUsers())
+    }, [])
+
     const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        // if (event.target.type === 'file') {
+        //     const fileInput = (event.target as HTMLInputElement) || ''
+        //     console.log(fileInput.files?.[0]?.name)
+        //     setUser((prevState) => ({
+        //         ...prevState,
+        //         [event.target.name]: fileInput.files?.[0],
+        //     }));
+        // }
+        // else {
+        //     setUser((prevState) => ({
+        //         ...prevState,
+        //         [event.target.name]: event.target.value,
+        //     }));
+        // }
+
+        // if (event.target.type === 'file') {
+        //     const fileInput = (event.target as HTMLInputElement) || ''
+        //     setUser((prevState) => {
+        //         console.log(fileInput.files?.[0])
+        //         return { ...prevState, [event.target.name]: fileInput.files?.[0] }
+        //     })
+        // } else {
+        //     setUser((prevState) => {
+        //         return { ...prevState, [event.target.name]: event.target.value }
+        //     })
+        // }
         if (event.target.type === 'file') {
-            const fileInput = (event.target as HTMLInputElement) || ''
-            console.log(fileInput.files?.[0]?.name)
-            setUser((prevState) => ({
-                ...prevState,
-                [event.target.name]: fileInput.files?.[0],
-            }));
+            const fileInput = (event.target as HTMLInputElement) || '';
+            setUser((prevUser) => {
+                return { ...prevUser, [event.target.name]: fileInput.files?.[0] };
+            });
+        } else {
+            setUser((prevUser) => {
+                return { ...prevUser, [event.target.name]: event.target.value };
+            });
         }
-        else {
-            setUser((prevState) => ({
-                ...prevState,
-                [event.target.name]: event.target.value,
-            }));
-        }
-    };
+    }
+
+
 
     const validateForm = () => {
         const newErrors = { ...errors };
@@ -91,37 +120,45 @@ const Login = () => {
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        const formData = new FormData();
-        formData.append("name", user.name)
-        formData.append("email", user.email)
-        formData.append("phone", user.phone)
-        formData.append("address", user.address)
-        formData.append("imge", user.image)
-        formData.append("password", user.password)
-
-        // Validate the form
-        if (!validateForm()) {
-            return; // If the form is not valid, do not submit.
-        }
-
+        // const formData = new FormData();
+        // formData.append("name", user.name)
+        // formData.append("email", user.email)
+        // formData.append("phone", user.phone)
+        // formData.append("address", user.address)
+        // formData.append("imge", user.image)
+        // formData.append("password", user.password)
+        const newUser = {
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            image: user.image,
+            phone: user.phone,
+            address: user.address
+        };
         const foundUser = users.items.find((userData) => userData.email === user.email);
-        if (foundUser && foundUser.password === user.password) {
-            alert('User with this email is already registered. Please log in.');
-        } else {
-            try {
-                const response = await registerNewUser(formData)
-                console.log(response)
-                toast.success(response.data.massage, {
-                    position: "top-right",
-                    autoClose: 3000, // Duration in milliseconds
-                });
-            } catch (error ) {
-                toast.error(error.response.data.massage, {
-                    position: "top-right",
-                    autoClose: 3000, // Duration in milliseconds
-                });
+
+        try {
+
+            // Validate the form
+            if (!validateForm()) {
+                return; // If the form is not valid, do not submit.
             }
+            const response = await registerNewUser(newUser)
+            console.log(response)
+            if (foundUser && foundUser.email === user.email) {
+                alert('User with this email is already registered. Please log in.');
+            }
+            toast.success(response.data.massage, {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
+        } catch (error) {
+            toast.error("error.response.data.massage", {
+                position: "top-right",
+                autoClose: 3000, // Duration in milliseconds
+            });
         }
+
 
         setUser({
             name: '',

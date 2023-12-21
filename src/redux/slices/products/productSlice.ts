@@ -37,6 +37,12 @@ export const fetchProducts = createAsyncThunk('items/fetchProducsts', async () =
     return res.data
     
 });
+export const fetchProduct = createAsyncThunk('items/fetchProducst', async (slug:string) => {
+  const res = await api.get(`/products/${slug}`);
+  console.log(res.data)
+    return res.data
+    
+});
 export const deleteProduct = createAsyncThunk('items/deleteProduct',async(slug: string) => {
   await api.delete(`/products/${slug}`)
   return slug
@@ -99,8 +105,13 @@ export const productSlice = createSlice({
         console.log(action.payload)
         state.items = action.payload.payload.products
       })
+      .addCase(fetchProduct.fulfilled, (state, action) => {
+        state.isLoading = false
+        console.log(action.payload)
+        state.items = action.payload.payload.products
+      })
     .addCase(deleteProduct.fulfilled, (state, action) => {
-      state.items = state.items.filter(product => product.slug == action.payload)
+      state.items = state.items.filter(product => product.slug !== action.payload)
       state.isLoading = false
       })
       builder.addMatcher((action) => action.type.endsWith('/pending'),
@@ -111,7 +122,8 @@ export const productSlice = createSlice({
       builder.addMatcher((action) => action.type.endsWith('/rejected'),
         (state,action) => {
           state.isLoading = false
-          state.error = action.error.message || "There is something wrong "
+          state.error = action.payload.error || "There is something wrong "
+
             })
   }
 })

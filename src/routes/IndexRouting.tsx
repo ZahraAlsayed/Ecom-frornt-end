@@ -16,7 +16,6 @@ import ManageCategory from '../components/admin-components/ManageCategory';
 import ManageProducts from '../components/admin-components/ManageProducts';
 import ManageOrders from '../components/admin-components/ManageOrders';
 import Error from '../pages/Error';
-import AddNewProducts from '../components/admin-components/AddnewProducts';
 import Login from '../components/Login';
 import AdminRouting from './AdminRouting';
 import ManageUsers from '../components/admin-components/ManageUsers';
@@ -34,9 +33,11 @@ function IndexRouting() {
                 <Route path='/' element={<Home />} />
                 <Route path='/product/:id' element={<ProductDetails />} />
                 <Route path='/singup' element={<SingupForm />} />
-                <Route path='/users/activate/:token' element={<ActivatePage/>} />
-                <Route path='/login' element={<Login />} />
+                <Route path='/users/activate/:token' element={<ActivatePage />} />
+                <Route path='/login' element={<Login  />} />
                 <Route path='/cart' element={<Cart />} />
+
+                
 
 
                 {/* <Route path="/dashboard" element={<AdminRouting />}> */}
