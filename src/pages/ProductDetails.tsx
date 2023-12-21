@@ -9,7 +9,7 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { AppDispatch, RootState } from '../redux/store'
-import { findProductBId, fetchProducts, Product, fetchProduct } from '../redux/slices/products/productSlice'
+import {  fetchProducts, Product, fetchProduct } from '../redux/slices/products/productSlice'
 import { addToCart } from '../redux/slices/products/cartSlice'
 import Header from '../components/layout/Header'
 import { ToastContainer, toast } from 'react-toastify'
@@ -20,7 +20,7 @@ import Footer from '../components/layout/Footer'
 
 
 const ProductDetails = () => {
-    const { slug} = useParams()
+    const { slug } = useParams()
     const dispatch = useDispatch<AppDispatch>()
     const state = useSelector((state: RootState) => state)
     const product = state.products
@@ -32,15 +32,18 @@ const ProductDetails = () => {
         navigate("/");
 
     }
-    useEffect(() => {
-
-        if (product.items.length > 0) {
+  
+        useEffect(() => {
             dispatch(fetchProduct(slug))
-        } else {
-            // if there were no products in the store, fetch them and then find the product by ID
-            dispatch(fetchProducts()).then(() => dispatch(findProductBId(slug)))
-        }
-    }, [slug, product.items, dispatch])
+        }, [])
+
+        // if (product.items.length > 0) {
+        //     dispatch(fetchProduct(slug))
+        // } else {
+        //     // if there were no products in the store, fetch them and then find the product by ID
+        //     dispatch(fetchProducts()).then(() => dispatch(findProductBId(slug)))
+        // }
+  
 
     const getCategoryName = (categoryId: string) => {
         const categoryItem = categories.items.find((category) => category._id == categoryId)
@@ -74,7 +77,7 @@ const ProductDetails = () => {
 
             <div className="container">
                 {product.singleProduct && (
-                    <div className="box">
+                    <div className="box" key={product.singleProduct.slug}>
                         <div className="images">
                             <span onClick={handleNavigation} ><ArrowBackIcon /></span>
                             <div className="img-holder active">
@@ -84,10 +87,10 @@ const ProductDetails = () => {
                         <div className="basic-info">
                             <h2>{product.singleProduct.title}</h2>
                             <Typography  >
-                                Categories :
+                                {/* Categories :
                                 {product.singleProduct.category?.map((categoryId) =>
                                     getCategoryName(categoryId)
-                                )}
+                                )} */}
                             </Typography>
 
                             {/* <span>

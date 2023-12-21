@@ -31,7 +31,7 @@ function IndexRouting() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/product/:id' element={<ProductDetails />} />
+                <Route path='/product/:slug' element={<ProductDetails />} />
                 <Route path='/singup' element={<SingupForm />} />
                 <Route path='/users/activate/:token' element={<ActivatePage />} />
                 <Route path='/login' element={<Login  />} />

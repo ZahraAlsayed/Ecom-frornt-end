@@ -239,7 +239,7 @@ const Home = () => {
                       <AddShoppingCartIcon fontSize="small" />
                     </IconButton>
 
-                    <Link to={`${baseURL}/products/${product.slug}`}>
+                    <Link to={`product/${product.slug}`}>
                       <Button size='small' >Show details</Button>
                     </Link>
                   </CardActionArea>
