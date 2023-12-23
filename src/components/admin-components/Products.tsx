@@ -21,8 +21,6 @@ import {
     deleteProduct,
     fetchProducts,
     productsRequest,
-    
-    removeProduct,
 
 } from '../../redux/slices/products/productSlice'
 
@@ -93,7 +91,7 @@ const Products = () => {
                                 <TableRow key={product._id}>
                                     <TableCell>{product._id}</TableCell>
                                     <TableCell>{product.title}</TableCell>
-                                    <TableCell><img src={`${baseURL}${product.image}`} alt={product.title} width={60} /></TableCell>
+                                    <TableCell><img src={product.image} alt={product.title} width={60} /></TableCell>
                                     <TableCell>
                                         <IconButton color="secondary" aria-label="edit">
                                             <EditIcon />

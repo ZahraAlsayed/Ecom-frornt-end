@@ -2,17 +2,22 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 import api from '../../../api'
+import { Category } from './categorySlice'
 
 export type Product = {
-  _id: string
+ _id: string
   title: string
+  slug: string
+  price: number
   image: string
+  category: string
   description: string
-  slug: string,
   quantity: number
   sold: number
-  price: number
-  category: string[]
+  shipping: number
+  createdAt: string
+  updatedAt: string
+
 }
 
 export type ProductState = {
@@ -20,7 +25,13 @@ export type ProductState = {
   error: null | string
   isLoading: boolean
   searchingTerm: string
-  singleProduct: Product 
+  singleProduct: Product,
+  addedProduct: null,
+   pagination: {
+          productTotal:number,
+          totalPage:number,
+         currentPage: number,
+        }
 
 }
 
@@ -28,8 +39,14 @@ const initialState: ProductState = {
   items: [],
   error: null,
   isLoading: false,
-   searchingTerm: "",
-  singleProduct: {} as Product 
+  searchingTerm: "",
+  addedProduct: null,
+  singleProduct: {} as Product ,
+   pagination: {
+          productTotal:0,
+          totalPage:0,
+         currentPage:0
+        }
 }
 export const fetchProducts = createAsyncThunk('items/fetchProducsts', async () => {
   const res = await api.get('/products');
@@ -47,6 +64,22 @@ export const deleteProduct = createAsyncThunk('items/deleteProduct',async(slug: 
   await api.delete(`/products/${slug}`)
   return slug
 })
+
+export const createProduct = createAsyncThunk(
+  'products/createProduct',
+  async (newProductData: FormData) => {
+    const res = await api.post(`/products`, newProductData)
+    console.log(res)
+    return res.data
+  })
+
+export const updateProduct = createAsyncThunk(
+  'products/updateProduct',
+  async (productData: Partial<Product>) => {
+    await api.put(`/products/${productData.slug}`, productData)
+    return productData
+  }
+)
 
 
 export const productSlice = createSlice({
@@ -68,14 +101,14 @@ export const productSlice = createSlice({
     //   const filteredItems = state.items.filter((product) => product._id !== action.payload)
     //   state.items = filteredItems
     // },
-    updateProduct: (state, action:  PayloadAction<Product>) => {
-       const index = state.items.findIndex((product) => product._id === action.payload._id);
+    // updateProduct: (state, action:  PayloadAction<Product>) => {
+    //    const index = state.items.findIndex((product) => product._id === action.payload._id);
 
-      if (index !== -1) {
-        state.items[index] = action.payload;
-      }
+    //   if (index !== -1) {
+    //     state.items[index] = action.payload;
+    //   }
 
-    },
+    // },
     getSreachResult:(state ,action)=>{
       state. searchingTerm =action.payload;
     },
@@ -102,18 +135,37 @@ export const productSlice = createSlice({
     builder
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false
-        
         state.items = action.payload.payload.products
+        console.log(action.payload.payload.pagination)
+         const {totalPage , currentPage ,productTotal} =action.payload.payload.pagination
       })
       .addCase(fetchProduct.fulfilled, (state, action) => {
         state.isLoading = false
-        console.log(action.payload.payload)
         state.singleProduct = action.payload.payload
       })
     .addCase(deleteProduct.fulfilled, (state, action) => {
       state.items = state.items.filter(product => product.slug !== action.payload)
       state.isLoading = false
-      })
+    })
+    builder.addCase(createProduct.fulfilled, (state, action) => {
+      console.log(action.payload)
+      state.items.push(action.payload.payload)
+      state.isLoading = false
+    })
+    builder.addCase(updateProduct.fulfilled, (state, action) => {
+      const { _id, title, image, description, category, quantity, sold, price } = action.payload
+      const foundProduct = state.items.find((product) => product._id == _id)
+      if (foundProduct) {
+        foundProduct.title = title || foundProduct.title
+        foundProduct.image = image || foundProduct.image
+        foundProduct.description = description || foundProduct.description
+        foundProduct.category = category || foundProduct.category
+        foundProduct.quantity = quantity || foundProduct.quantity
+        foundProduct.sold = sold || foundProduct.sold
+        foundProduct.price = price || foundProduct.price
+      }
+      state.isLoading = false
+    })
       builder.addMatcher((action) => action.type.endsWith('/pending'),
         (state) => {
           state.isLoading = true
@@ -128,6 +180,6 @@ export const productSlice = createSlice({
   }
 })
 export const { addProduct, productsRequest ,getSreachResult,
-  sortProducts ,findProductBId,updateProduct} = productSlice.actions
+  sortProducts ,findProductBId} = productSlice.actions
 
 export default productSlice.reducer

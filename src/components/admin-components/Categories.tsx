@@ -41,7 +41,7 @@ const Categories = () => {
         dispatch(fechCategories())
     }
         , [dispatch])
-
+console.log(categories.items)
     const handelDelete = (id: string) => {
         try {
             dispatch(deletecaregoy(id))

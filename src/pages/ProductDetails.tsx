@@ -16,6 +16,7 @@ import { ToastContainer, toast } from 'react-toastify'
 
 import '../style/product.css'
 import Footer from '../components/layout/Footer'
+import { baseURL } from '../api';
 
 
 
@@ -46,6 +47,7 @@ const ProductDetails = () => {
   
 
     const getCategoryName = (categoryId: string) => {
+        
         const categoryItem = categories.items.find((category) => category._id == categoryId)
         return categoryItem ? categoryItem.name + '  ' + "  " : "Category not found"
     }
@@ -63,7 +65,7 @@ const ProductDetails = () => {
     // if (product.error) {
     //     return <p>{product.error}</p>
     // }
-    console.log(product.singleProduct)
+    console.log(product.singleProduct.category)
 
     return (
 
@@ -87,10 +89,11 @@ const ProductDetails = () => {
                         <div className="basic-info">
                             <h2>{product.singleProduct.title}</h2>
                             <Typography  >
-                                {/* Categories :
-                                {product.singleProduct.category?.map((categoryId) =>
+                                Categories :
+                                {/* {product.singleProduct.category?.map((categoryId) =>
                                     getCategoryName(categoryId)
                                 )} */}
+                                {product.singleProduct.category}
                             </Typography>
 
                             {/* <span>
@@ -104,10 +107,12 @@ const ProductDetails = () => {
 
                                 ))}
                             </span> */}
-
                             <span>{product.singleProduct.price} SAR</span>
                             <div className="description">
                                 <Typography>{product.singleProduct.description}</Typography>
+                                <span>
+                                <Typography className='category'>Quantity :{product.singleProduct.quantity}</Typography>
+                                </span>
                             </div>
                             <div className="options">
                                 <Button onClick={() => { handelAddToCart(product.singleProduct) }} >Add to Cart</Button>

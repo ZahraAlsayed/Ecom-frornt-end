@@ -100,7 +100,7 @@ const Home = () => {
     const categoryItem = categories.items.find((category) => category._id == categoryId)
     return categoryItem ? categoryItem.name + '  ' + "  " : "Category not found"
   }
-  console.log(products.items)
+  
 
   const handleSort = (event: ChangeEvent<HTMLSelectElement>) => {
     const sortingOption = event.target.value;
@@ -211,7 +211,7 @@ const Home = () => {
                       sizes='small'
                       component="img"
                       height="140"
-                      image={`${baseURL}${product.image}`}
+                      image={product.image}
                       alt={product.title}
 
                     />

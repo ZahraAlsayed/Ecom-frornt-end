@@ -1,6 +1,6 @@
 import api from '../api'
 
-export const registerNewUser = async (UserDeta: {}) => {
+export const registerNewUser = async (UserDeta: FormData) => {
   try {
     const res = await api.post(`/users/process-register`, UserDeta)
     console.log(UserDeta)

@@ -12,12 +12,12 @@ const ActivatePage = () => {
     const navigate = useNavigate()
 
     const { token } = useParams()
-    const decoded = jwtDecode(token)
+    const decoded = jwtDecode(String(token))
     console.log(decoded)
     const handelActivate = async () => {
         try {
-            const response = await activateUser(token)
-            toast.success(response.data.massage, {
+            const response = await activateUser(String(token))
+            toast.success(`${response.message}`, {
                 position: "top-right",
                 autoClose: 3000, // Duration in milliseconds
             });
