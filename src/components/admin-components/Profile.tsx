@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 import {
     Paper,
@@ -12,8 +12,36 @@ import {
     from '@mui/material';
 import AdminFooter from './AdminFooter';
 import AdminHeader from './AdminHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { updateUser } from '../../redux/slices/userslices/userSlice';
 
 const AdminProfile = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    const { userData } = useSelector((state: RootState) => state.users)
+    const [isFormOpen, setIsFormOpen] = useState(false)
+    const [user, setUser] = useState({
+        name: userData?.name
+    })
+    const [userNameError, setUserNameError] = useState('')
+
+    const handleFormOpen = () => {
+        setIsFormOpen(!isFormOpen)
+    }
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target
+        setUser((prevUser) => {
+            return { ...prevUser, [name]: value }
+        })
+    }
+    const handleSubmit = (event: FormEvent) => {
+        event.preventDefault()
+
+        const updatUserData = { _id: userData?._id, ...user }
+        dispatch(updateUser(updatUserData))
+    }
+
     return (
         <Container >
             <AdminHeader/>

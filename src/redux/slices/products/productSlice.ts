@@ -1,3 +1,4 @@
+import { productSlice } from './productSlice';
 /* eslint-disable prettier/prettier */
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
@@ -27,6 +28,7 @@ export type ProductState = {
   searchingTerm: string
   singleProduct: Product,
   addedProduct: null,
+  categotyName:string,
    pagination: {
           productTotal:number,
           totalPage:number,
@@ -41,6 +43,7 @@ const initialState: ProductState = {
   isLoading: false,
   searchingTerm: "",
   addedProduct: null,
+  categotyName:'',
   singleProduct: {} as Product ,
    pagination: {
           productTotal:0,
@@ -109,15 +112,19 @@ export const productSlice = createSlice({
     //   }
 
     // },
-    getSreachResult:(state ,action)=>{
-      state. searchingTerm =action.payload;
+    getSreachResult: (state, action) => {
+      state.categotyName =action.payload;
     },
+    // getCategoryName: (state, action) => {
+    //   console.log(action.payload.payload.products)
+    //   state.searchingTerm =action.payload;
+    // },
     sortProducts:(state ,action)=>{
       const sortingInput =action.payload;
       if(sortingInput === 'name'){
         state.items.sort((a,b)=>a.title.localeCompare(b.title) )
       }
-      else if(sortingInput === 'prise'){
+      else if(sortingInput === 'price'){
         state.items.sort((a,b)=>a.price -b.price )
       }
     },
@@ -180,6 +187,6 @@ export const productSlice = createSlice({
   }
 })
 export const { addProduct, productsRequest ,getSreachResult,
-  sortProducts ,findProductBId} = productSlice.actions
+  sortProducts ,findProductBId,getCategoryName} = productSlice.actions
 
 export default productSlice.reducer

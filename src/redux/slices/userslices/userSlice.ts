@@ -23,6 +23,7 @@ const data =
   localStorage.getItem('loginData') !== null
     ? JSON.parse(String(localStorage.getItem('login')))
     : []
+
 export type UserState = {
   items: User[]
   error: null | string
@@ -87,14 +88,22 @@ export const unbaneUser = createAsyncThunk('items/unbaneUser', async (id: string
 //     throw new Error(`Failed to Rigster user}`)
 //   }
 // })
+// export const createUser = async (newUser: FormData) => {
+//   const response = await axios.post(`${API_BASE_URL}/users/process-register`, newUser)
+//   return response.data
+// }
 
-export const login = createAsyncThunk('items/login',async (user: {} , {rejectWithValue}) => {
+// export const activateUser = async (token: string) => {
+//   const response = await axios.post(`${API_BASE_URL}/users/activate`, { token })
+//   return response.data
+// }
+
+export const login = createAsyncThunk('items/login',async (user: object, {rejectWithValue}) => {
   try {
     const res = await api.post('/auth/login', user)
-    console.log(res.data)
     return res.data
   } catch (error :any) {
-    return rejectWithValue(error.response.message)
+    return rejectWithValue(error.res.message)
   }
 })
 
@@ -106,6 +115,22 @@ export const logout = createAsyncThunk('items/logout', async () => {
      throw new Error(`Failed to fetch `)
   }
 });
+export const updateUser = createAsyncThunk('users/updateUser', async (userData: Partial<User>) => {
+  await api.put(`/users/${userData._id}`, userData)
+  return userData
+})
+export const forgetPassword = createAsyncThunk('users/forgetPassword', async (email: string) => {
+  const response = await api.post(`/users/forget-password`, { email: email })
+  return response.data
+})
+
+export const restPassword = createAsyncThunk('users/restPassword', async (data: Partial<User>) => {
+  const response = await api.post(`/users//reset-password`, {
+    password: data.password,
+    token: data.token
+  })
+  return response.data
+})
 
 
 export const userSlice = createSlice({
@@ -141,12 +166,25 @@ export const userSlice = createSlice({
         state.isLoading = false
         state.error = null
       })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        if (state.userData) {
+          state.userData.name = action.payload.name
+          localStorage.setItem(
+            'loginData',
+            JSON.stringify({
+              isLoggedIn: state.isLoggedIn,
+              userData: state.userData
+            })
+          )
+        }
+      })
       .addCase(login.fulfilled, (state, action) => {
-        state.isLoggedIn = true
-        state.userData = action.payload.payload
-        console.log(state.userData)
+        console.log(action.payload.message)
+        console.log(action.payload.payload)
+          state.isLoggedIn = true
+          state.userData = action.payload.payload
       localStorage.setItem(
-        'login',
+        'loginData',
         JSON.stringify({
           isLoggedIn: state.isLoggedIn,
           userData: state.userData

@@ -27,11 +27,6 @@ import {
 
 } from '../../redux/slices/products/productSlice'
 
-import api from '../../api'
-
-
-import { ProductForm } from './ProductForm'
-
 import '../../style/admin.css'
 import { toast } from 'react-toastify';
 

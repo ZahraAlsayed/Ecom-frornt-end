@@ -23,6 +23,7 @@ import AdminProfile from '../components/admin-components/Profile';
 import ActivateUser from '../pages/ActivatePage';
 import ActivatePage from '../pages/ActivatePage';
 import AddNewProducts from '../components/admin-components/AddnewProducts';
+import ForgetPassword from '../pages/ForgetPassword';
 
 
 function IndexRouting() {
@@ -35,7 +36,9 @@ function IndexRouting() {
                 <Route path='/product/:slug' element={<ProductDetails />} />
                 <Route path='/singup' element={<SingupForm />} />
                 <Route path='/users/activate/:token' element={<ActivatePage />} />
-                <Route path='/login' element={<Login  />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='users/forget-password' element={<ForgetPassword />} />
+
                 <Route path='/cart' element={<Cart />} />
 
                 

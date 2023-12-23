@@ -13,6 +13,10 @@ const Login = () => {
     const dispatch = useDispatch<AppDispatch>()
     const state = useSelector((state: RootState) => state)
     const users = state.users
+
+    useEffect(() => {
+        dispatch(fechUsers())
+    }, [])
     
     const navigate = useNavigate()
     const [user, setUser] = useState({
@@ -25,11 +29,6 @@ const Login = () => {
         password: '',
     })
    
-    useEffect(() => {
-        dispatch(fechUsers());
-    }, [dispatch])
-
-
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
         setUser((prevState) => {
@@ -64,21 +63,21 @@ const Login = () => {
         
 
         try {
-            const loginInfo = {
-                email: user.email,
-                password: user.password
-            }
+            // const loginInfo = {
+            //     email: user.email,
+            //     password: user.password
+            // }
             if (!validateForm()) {
                 return; // If the form is not valid, do not submit.
             }
-            dispatch(login(loginInfo))
-            console.log(users.userData)
-                if (users.userData?.isAdmin) {
+            console.log(users.userData?.isAdmin)
+            dispatch(login(user))
+            if (users.userData?.isAdmin) {
                     navigate('/dashboard/admin')
             //     } else if (!users.userData?.isAdmin){
             //         navigate('/')
             // } else {
-            toast.error('Invalid email or password')
+            // toast.error('Invalid email or password')
         }
             // const foundUser = users.userData?.isAdmin 
             // console.log(users.userData)

@@ -16,7 +16,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import {
   productsRequest,
-
+  getCategoryName,
   getSreachResult,
   sortProducts,
   Product,
@@ -49,11 +49,11 @@ const Home = () => {
     dispatch(fetchProducts());
   }, [dispatch])
 
-  useEffect(() => {
-    dispatch(fechCategories());
-  },)
+  // useEffect(() => {
+  //   dispatch(fechCategories());
+  // },)
 
-  //console.log(categories.items)
+  
 
   const handelAddToCart = (product: Product) => {
     dispatch(addToCart(product))
@@ -85,6 +85,11 @@ const Home = () => {
   const currentIrem = filteredProducts.slice(startIndex, endIndex)
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
 
+  // const endIndex = currentPage * itemsPerPage;
+  // const startIndex = endIndex - itemsPerPage;
+  // const currentIrem = filteredProducts.slice(startIndex, endIndex)
+  // const totalPages =products.pagination.totalPage
+
   const handelPreviousPage = () => {
     setCurrnetPage(currentPage - 1)
   }
@@ -96,10 +101,10 @@ const Home = () => {
     setCurrnetPage(newPage);
   };
 
-  const getCategoryName = (categoryId: string) => {
-    const categoryItem = categories.items.find((category) => category._id == categoryId)
-    return categoryItem ? categoryItem.name + '  ' + "  " : "Category not found"
-  }
+  // const getCategoryName = (categoryId: string) => {
+  //   const categoryItem = categories.items.find((category) => category._id == categoryId)
+  //   return categoryItem ? categoryItem.name + '  ' + "  " : "Category not found"
+  // }
   
 
   const handleSort = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -217,11 +222,12 @@ const Home = () => {
                     />
                     <CardContent>
                       <Typography >
-                        {/* <p className='category' >
-                          {product.category.map((categoryId) =>
+                        
+                        <p className='category' >
+                          {/* {product.category.map((categoryId) =>
                             getCategoryName(categoryId)
-                          )}
-                        </p> */}
+                          )} */}
+                        </p>
                       </Typography>
                       <Typography gutterBottom variant="h5" component="div">
                         {product.title}
