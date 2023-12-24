@@ -120,16 +120,17 @@ export const updateUser = createAsyncThunk('users/updateUser', async (userData: 
   return userData
 })
 export const forgetPassword = createAsyncThunk('users/forgetPassword', async (email: string) => {
-  const response = await api.post(`/users/forget-password`, { email: email })
-  return response.data
+  const res = await api.post(`/users/forget-password`, { email: email })
+  return res.data
 })
 
 export const restPassword = createAsyncThunk('users/restPassword', async (data: Partial<User>) => {
-  const response = await api.post(`/users//reset-password`, {
+  const res = await api.post(`/users//reset-password`, {
     password: data.password,
     token: data.token
   })
-  return response.data
+  console.log(data)
+  return res.data
 })
 
 

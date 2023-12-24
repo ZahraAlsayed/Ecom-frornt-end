@@ -24,6 +24,7 @@ import ActivateUser from '../pages/ActivatePage';
 import ActivatePage from '../pages/ActivatePage';
 import AddNewProducts from '../components/admin-components/AddnewProducts';
 import ForgetPassword from '../pages/ForgetPassword';
+import RestPassword from '../pages/RestPassword';
 
 
 function IndexRouting() {
@@ -38,6 +39,8 @@ function IndexRouting() {
                 <Route path='/users/activate/:token' element={<ActivatePage />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='users/forget-password' element={<ForgetPassword />} />
+                <Route path='users/rest-password/:token' element={<RestPassword />} />
+
 
                 <Route path='/cart' element={<Cart />} />
 

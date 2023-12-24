@@ -161,7 +161,11 @@ const Login = () => {
                         <span className="error-message">{errors.password}</span>
                     </div>
                 </div>
-                <div className="pass">Forgot Password?</div>
+                <div className="pass">
+                    <Link to='/users/forget-password'>
+                        Forgot Password?
+                    </Link>
+                </div>
                 <button type="submit" value="Login" >Login</button>
                 <div className="signup_link">
                     Not register? <Link to='/singup'>Signup</Link>
