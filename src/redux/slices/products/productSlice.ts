@@ -63,7 +63,21 @@ export const fetchData = createAsyncThunk(
     const response = await api.get(`/products`, {
       params: {
         page,
-        limit
+        limit,
+        
+      }
+    })
+    return response.data
+  }
+)
+export const fetchFilterProducts = createAsyncThunk(
+  'products/fetchFilterProducts',
+  async ({ page, limit, checkedCategory }: { page: number; limit: number ; checkedCategory:string[]}) => {
+    const response = await api.get(`/products/filter-products`, {
+      params: {
+        page,
+        limit,
+        checkedCategory
       }
     })
     return response.data
@@ -168,6 +182,17 @@ export const productSlice = createSlice({
       state.isLoading = false
     })
     .addCase(fetchData.fulfilled, (state, action) => {
+      const { totalPage, currentPage, totalProducts } = action.payload.payload.pagination
+      state.pagination = {
+        totalProducts: totalProducts,
+        totalPage: totalPage,
+        currentPage: currentPage
+      }
+      // state.pagination = action.payload.payload.pagination
+      state.items = action.payload.payload.products
+      state.isLoading = false
+    })
+    .addCase(fetchFilterProducts.fulfilled, (state, action) => {
       const { totalPage, currentPage, totalProducts } = action.payload.payload.pagination
       state.pagination = {
         totalProducts: totalProducts,

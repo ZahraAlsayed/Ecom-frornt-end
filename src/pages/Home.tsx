@@ -21,10 +21,10 @@ import {
   Product,
   fetchProducts,
   fetchData,
+  fetchFilterProducts,
 } from '../redux/slices/products/productSlice'
 import { AppDispatch, RootState } from '../redux/store'
 
-import api, { baseURL } from '../api'
 import Footer from '../components/layout/Footer'
 import Header from '../components/layout/Header'
 import ImageSlider from '../components/layout/ImageSlider'
@@ -42,19 +42,44 @@ const Home = () => {
   const [checkedCategories, setCheckedCategories] = useState<string[]>([])
   const [currentPage, setCurrnetPage] = useState(1)
   const [itemsPerPage, setitemsPerPage] = useState(6)
+  console.log(checkedCategories)
 
 
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchProducts());
+  // }, [dispatch])
 
   // useEffect(() => {
   //   dispatch(fechCategories());
   // },)
+  // const fetchAllProducts = async ()=>{
+  //   dispatch(fetchData(currentPage,i))
+  // }
   // useEffect(() => {
   //   dispatch(fetchData({ page: products.pagination.currentPage, limit: products.pagination.totalProducts }))
   // }, [dispatch, products.pagination.currentPage, products.pagination.totalProducts])
+
+  // const fetchAllProducts = async () => {
+  //   await dispatch(fetchData({ page: currentPage, limit: itemsPerPage,  }))
+  // }
+  // useEffect(() => {
+  //   fetchAllProducts()
+  // }, [dispatch, currentPage, itemsPerPage,])
+
+  const filterAllProducts = async () => {
+    await dispatch(fetchData({ page: currentPage, limit: itemsPerPage, }))
+    await dispatch(fetchFilterProducts({ page: currentPage, limit: itemsPerPage, checkedCategory: checkedCategories }))
+  }
+  useEffect(() => {
+    filterAllProducts()
+  }, [dispatch, currentPage, itemsPerPage, checkedCategories])
+
+  // const filterAllProducts = async () => {
+  //   await dispatch(fetchFilterProducts({ page: currentPage, limit: itemsPerPage, checkedCategory }))
+  // }
+  // useEffect(() => {
+  //   filterAllProducts()
+  // }, [dispatch, currentPage, itemsPerPage, checkedCategories])
 
 
   const handelAddToCart = (product: Product) => {
@@ -67,11 +92,11 @@ const Home = () => {
 
 
   const filteredProducts = products.items.filter((product) => {
-    const selectedCategories =
-      checkedCategories.length > 0
-        ? checkedCategories.some((id) => product.category.includes(String(id)))
+    // const selectedCategories =
+    //   checkedCategories.length > 0
+    //     ? checkedCategories.some((id) => product.category.includes(id))
 
-        : product
+    //     : product
 
     const searchValue =
       products.searchingTerm != ''
@@ -79,13 +104,13 @@ const Home = () => {
 
         : product
 
-    return searchValue && selectedCategories
+    return searchValue
 
   })
-  const endIndex = currentPage * itemsPerPage;
-  const startIndex = endIndex - itemsPerPage;
-  const currentIrem = filteredProducts.slice(startIndex, endIndex)
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
+  // const endIndex = currentPage * itemsPerPage;
+  // const startIndex = endIndex - itemsPerPage;
+  // const currentIrem = filteredProducts.slice(startIndex, endIndex)
+  // const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
 
   // const endIndex = currentPage * itemsPerPage;
   // const startIndex = endIndex - itemsPerPage;
@@ -113,10 +138,12 @@ const Home = () => {
     const sortingOption = event.target.value;
     dispatch(sortProducts(sortingOption));
   }
+
   const handleCategoryChange = (categoryId: string) => {
     if (checkedCategories.includes(categoryId)) {
       // Category is already selected, so unselect it
-      setCheckedCategories(checkedCategories.filter(id => id !== categoryId));
+      const filterCategory = checkedCategories.filter((category) => category !== categoryId)
+      setCheckedCategories(filterCategory);
 
     } else {
       setCheckedCategories((pervState) => {
@@ -124,7 +151,9 @@ const Home = () => {
         return checheckedValues
       })
     }
+    //setCheckedCategories([''])
   }
+
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const sreachInput = event.target.value;
@@ -197,7 +226,7 @@ const Home = () => {
       <div className="body" >
         <Container  >
           <Grid container item spacing={{ xs: 4, md: 4 }} alignItems='center'>
-            {currentIrem.map((product) => (
+            {filteredProducts.map((product) => (
               <Grid key={product._id}
                 item xs={10}
                 sm={5} md={4}
@@ -262,7 +291,7 @@ const Home = () => {
         <div className='btn-paginacao'>
           <Button onClick={handelPreviousPage} disabled={currentPage == 1}><ArrowBackIosIcon sx={{ color: 'black' }} /></Button>
           <span className='pagenumber'>
-            {Array.from({ length: totalPages }).map((_, index) => (
+            {Array.from({ length: products.pagination.totalPage }).map((_, index) => (
               <BootstrapButton
                 key={index}
                 onClick={() => handlePageChange(index + 1)}
@@ -272,7 +301,7 @@ const Home = () => {
               </BootstrapButton>
             ))}
           </span>
-          <Button onClick={handelNextPage} disabled={currentPage == totalPages} ><ArrowForwardIosIcon sx={{ color: 'black' }} /></Button>
+          <Button onClick={handelNextPage} disabled={currentPage == products.pagination.totalPage} ><ArrowForwardIosIcon sx={{ color: 'black' }} /></Button>
         </div>
       </div>
       <Footer />
