@@ -21,8 +21,9 @@ export type User = {
 }
 const data =
   localStorage.getItem('loginData') !== null
-    ? JSON.parse(String(localStorage.getItem('login')))
+    ? JSON.parse(String(localStorage.getItem('loginData')))
     : []
+    
 
 export type UserState = {
   items: User[]
@@ -132,6 +133,10 @@ export const restPassword = createAsyncThunk('users/restPassword', async (data: 
   console.log(data)
   return res.data
 })
+export const roleUser = createAsyncThunk('users/roleUser', async (id: string) => {
+  await api.put<User[]>(`/users/role/${id}`)
+  return id
+})
 
 
 export const userSlice = createSlice({
@@ -196,13 +201,20 @@ export const userSlice = createSlice({
         state.isLoggedIn = false
         state.userData = null
         localStorage.setItem(
-          'login',
+          'loginData',
           JSON.stringify({
             isLoggedIn: state.isLoggedIn,
             userData: state.userData
           })
         )
-          })
+      })
+    .addCase(roleUser.fulfilled, (state, action) => {
+      state.isLoading = false
+      const foundUser = state.items.find((user) => user._id === action.payload)
+      if (foundUser) {
+        foundUser.isAdmin = true
+      }
+    })
           
       
       builder.addMatcher((action) => action.type.endsWith('/pending'),

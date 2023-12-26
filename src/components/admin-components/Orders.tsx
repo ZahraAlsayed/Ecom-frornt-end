@@ -16,7 +16,7 @@ import {
 import DoneIcon from '@mui/icons-material/Done';
 
 import { AppDispatch, RootState } from '../../redux/store'
-import { fechOrders } from '../../redux/slices/userslices/orderSlice';
+import { fechOrdersForAdmin } from '../../redux/slices/userslices/orderSlice';
 
 import '../../style/admin.css'
 import '../../style/table.css'
@@ -27,17 +27,16 @@ const Orders = () => {
     
 
     useEffect(() => {
-        dispatch(fechOrders())
+        dispatch(fechOrdersForAdmin())
     }
         , [])
-    console.log(items)
 
-    if (isLoading) {
-        return <p>loding ...</p>
-    }
-    if (error) {
-        return <p>{error}</p>
-    }
+    // if (isLoading) {
+    //     return <p>loding ...</p>
+    // }
+    // if (error) {
+    //     return <p>{error}</p>
+    // }
     return (
         <div className="">
 
@@ -51,17 +50,17 @@ const Orders = () => {
                                 <TableCell>Order ID</TableCell>
                                 <TableCell>Product ID</TableCell>
                                 <TableCell>User ID</TableCell>
-                                <TableCell>Order Date</TableCell>
+                                {/* <TableCell>Order Date</TableCell> */}
                                 <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {items.map((order) => (
-                                <TableRow key={order.id}>
-                                    <TableCell>{order.id}</TableCell>
-                                    <TableCell>{order.productId}</TableCell>
-                                    <TableCell>{order.userId}</TableCell>
-                                    <TableCell>{order.purchasedAt}</TableCell>
+                                <TableRow key={order._id}>
+                                    <TableCell>{order._id}</TableCell>
+                                    <TableCell>{order.products.image}</TableCell>
+                                    <TableCell>{order.user.name}</TableCell>
+                                    {/* <TableCell>{order.payment}</TableCell> */}
                                     <TableCell><DoneIcon color="primary" fontSize="large" /></TableCell>
                                 </TableRow>
                             ))}

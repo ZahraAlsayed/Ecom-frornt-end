@@ -20,7 +20,7 @@ const AdminHeader = () => {
             <header className="header">
                 <div className="header__logo">
                     <img
-                        src='../../src/assets/logo-techtrove.png'
+                        src='https://res.cloudinary.com/dc9snu7rk/image/upload/v1703446913/l4jfqz1qr7l7pizru9r4.png'
                         alt="Logo"
                         width={180}
                     />

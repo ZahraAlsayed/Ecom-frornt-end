@@ -1,4 +1,3 @@
-import { productSlice } from './productSlice';
 /* eslint-disable prettier/prettier */
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
@@ -12,6 +11,7 @@ export type Product = {
   price: number
   image: string
   category: string
+  categoryName: Category
   description: string
   quantity: number
   sold: number
@@ -29,11 +29,11 @@ export type ProductState = {
   singleProduct: Product,
   addedProduct: null,
   categotyName:string,
-   pagination: {
-          productTotal:number,
-          totalPage:number,
-         currentPage: number,
-        }
+    pagination: {
+    totalProducts: number
+    totalPage: number
+    currentPage: number
+  }
 
 }
 
@@ -45,11 +45,11 @@ const initialState: ProductState = {
   addedProduct: null,
   categotyName:'',
   singleProduct: {} as Product ,
-   pagination: {
-          productTotal:0,
-          totalPage:0,
-         currentPage:0
-        }
+    pagination: {
+    totalProducts: 0,
+    totalPage: 1,
+    currentPage: 1
+  }
 }
 export const fetchProducts = createAsyncThunk('items/fetchProducsts', async () => {
   const res = await api.get('/products');
@@ -57,6 +57,18 @@ export const fetchProducts = createAsyncThunk('items/fetchProducsts', async () =
     return res.data
     
 });
+export const fetchData = createAsyncThunk(
+  'products/fetchData',
+  async ({ page, limit }: { page: number; limit: number }) => {
+    const response = await api.get(`/products`, {
+      params: {
+        page,
+        limit
+      }
+    })
+    return response.data
+  }
+)
 export const fetchProduct = createAsyncThunk('items/fetchProducst', async (slug:string | undefined) => {
   const res = await api.get(`/products/${slug}`);
   console.log(res.data)
@@ -78,9 +90,10 @@ export const createProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   'products/updateProduct',
-  async (productData: Partial<Product>) => {
-    await api.put(`/products/${productData.slug}`, productData)
-    return productData
+  async (data: { slug: string; formData: FormData }) => {
+    const response = await api.put(`/products/${data.slug}`, data.formData)
+    // return data
+    return response.data
   }
 )
 
@@ -113,7 +126,7 @@ export const productSlice = createSlice({
 
     // },
     getSreachResult: (state, action) => {
-      state.categotyName =action.payload;
+      state.searchingTerm =action.payload;
     },
     // getCategoryName: (state, action) => {
     //   console.log(action.payload.payload.products)
@@ -144,7 +157,7 @@ export const productSlice = createSlice({
         state.isLoading = false
         state.items = action.payload.payload.products
         console.log(action.payload.payload.pagination)
-         const {totalPage , currentPage ,productTotal} =action.payload.payload.pagination
+        //  const {totalPage , currentPage ,productTotal} =action.payload.payload.pagination
       })
       .addCase(fetchProduct.fulfilled, (state, action) => {
         state.isLoading = false
@@ -154,24 +167,34 @@ export const productSlice = createSlice({
       state.items = state.items.filter(product => product.slug !== action.payload)
       state.isLoading = false
     })
+    .addCase(fetchData.fulfilled, (state, action) => {
+      const { totalPage, currentPage, totalProducts } = action.payload.payload.pagination
+      state.pagination = {
+        totalProducts: totalProducts,
+        totalPage: totalPage,
+        currentPage: currentPage
+      }
+      // state.pagination = action.payload.payload.pagination
+      state.items = action.payload.payload.products
+      state.isLoading = false
+    })
     builder.addCase(createProduct.fulfilled, (state, action) => {
       console.log(action.payload)
       state.items.push(action.payload.payload)
       state.isLoading = false
     })
-    builder.addCase(updateProduct.fulfilled, (state, action) => {
-      const { _id, title, image, description, category, quantity, sold, price } = action.payload
-      const foundProduct = state.items.find((product) => product._id == _id)
-      if (foundProduct) {
-        foundProduct.title = title || foundProduct.title
-        foundProduct.image = image || foundProduct.image
-        foundProduct.description = description || foundProduct.description
-        foundProduct.category = category || foundProduct.category
-        foundProduct.quantity = quantity || foundProduct.quantity
-        foundProduct.sold = sold || foundProduct.sold
-        foundProduct.price = price || foundProduct.price
-      }
+    .addCase(updateProduct.fulfilled, (state, action) => {
+      console.log(action.payload.payload)
+      const updatedProduct = action.payload.payload
+      console.log(updatedProduct)
+      state.items = state.items.map((product) => {
+        if (product._id === updatedProduct._id) {
+          return { ...product, ...updatedProduct }
+        }
+        return product
+      })
       state.isLoading = false
+
     })
       builder.addMatcher((action) => action.type.endsWith('/pending'),
         (state) => {
@@ -187,6 +210,6 @@ export const productSlice = createSlice({
   }
 })
 export const { addProduct, productsRequest ,getSreachResult,
-  sortProducts ,findProductBId,getCategoryName} = productSlice.actions
+  sortProducts ,findProductBId} = productSlice.actions
 
 export default productSlice.reducer

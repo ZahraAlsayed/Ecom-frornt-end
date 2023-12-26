@@ -16,11 +16,11 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import {
   productsRequest,
-  getCategoryName,
   getSreachResult,
   sortProducts,
   Product,
   fetchProducts,
+  fetchData,
 } from '../redux/slices/products/productSlice'
 import { AppDispatch, RootState } from '../redux/store'
 
@@ -52,8 +52,10 @@ const Home = () => {
   // useEffect(() => {
   //   dispatch(fechCategories());
   // },)
+  // useEffect(() => {
+  //   dispatch(fetchData({ page: products.pagination.currentPage, limit: products.pagination.totalProducts }))
+  // }, [dispatch, products.pagination.currentPage, products.pagination.totalProducts])
 
-  
 
   const handelAddToCart = (product: Product) => {
     dispatch(addToCart(product))
@@ -105,7 +107,7 @@ const Home = () => {
   //   const categoryItem = categories.items.find((category) => category._id == categoryId)
   //   return categoryItem ? categoryItem.name + '  ' + "  " : "Category not found"
   // }
-  
+
 
   const handleSort = (event: ChangeEvent<HTMLSelectElement>) => {
     const sortingOption = event.target.value;
@@ -153,6 +155,7 @@ const Home = () => {
       <div className="search-bar">
         <div >
           <input type="text"
+
             style={{
               flex: 0.5,
               width: '700px',
@@ -161,7 +164,9 @@ const Home = () => {
               borderRadius: '40px',
               marginLeft: '200px',
               color: 'rgb(102, 102, 102)',
-            }} placeholder="Search products" value={products.searchingTerm} onChange={handleSearch} />
+            }} placeholder="Search products"
+            value={products.searchingTerm}
+            onChange={handleSearch} />
         </div>
         <div className="sort-dropdown">
           <select id="sort" name='sort' onChange={handleSort}>
@@ -222,7 +227,7 @@ const Home = () => {
                     />
                     <CardContent>
                       <Typography >
-                        
+
                         <p className='category' >
                           {/* {product.category.map((categoryId) =>
                             getCategoryName(categoryId)

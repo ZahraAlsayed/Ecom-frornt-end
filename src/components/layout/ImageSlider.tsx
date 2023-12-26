@@ -19,10 +19,10 @@ const settings = {
 
 const ImageSlider = () => {
     const images = [
-        './src/assets/welcome.png',
-        './src/assets/offers.png',
-        './src/assets/banner3.png',
-        './src/assets/banner4.png',
+        'https://res.cloudinary.com/dc9snu7rk/image/upload/v1703446914/kz0degrj492ogw3xgvy5.png',
+        'https://res.cloudinary.com/dc9snu7rk/image/upload/v1703446914/wvyejq4zhm6zozmtua34.png',
+        'https://res.cloudinary.com/dc9snu7rk/image/upload/v1703446914/bxnzh4o1jglaxdxy3ufq.png',
+        'https://res.cloudinary.com/dc9snu7rk/image/upload/v1703446913/ly872uuaasmevekotfma.png',
 
 
 

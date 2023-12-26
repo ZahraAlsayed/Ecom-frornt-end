@@ -69,7 +69,6 @@ const UpdatingProducts = () => {
     }
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
-        if (!productEdit) {
             const formData = new FormData()
             formData.append('title', product.title)
             formData.append('price', product.price.toString())
@@ -80,8 +79,8 @@ const UpdatingProducts = () => {
             formData.append('sold', product.sold.toString())
             formData.append('shipping', product.shipping.toString())
 
+        if(!productEdit) {
             dispatch(createProduct(formData))
-            toast.success('Successful Add Product')
             setProduct({
                 title: '',
                 slug: '',
@@ -94,20 +93,9 @@ const UpdatingProducts = () => {
                 price: 0
             })
         } else {
-            const updateProducts = {
-                _id: productId,
-                title: product.title,
-                slug: product.slug,
-                image: product.image,
-                description: product.description,
-                category: product.category,
-                quantity: product.quantity,
-                sold: product.sold,
-                shipping: product.shipping,
-                price: product.price
-            }
-            dispatch(updateProduct(updateProducts))
+            dispatch(updateProduct({ slug: product.slug, formData: formData }))
             toast.success('Successful Update Product')
+            dispatch(fetchProducts())
             setProduct({
                 title: '',
                 slug: '',
@@ -120,8 +108,6 @@ const UpdatingProducts = () => {
                 price: 0
             })
         }
-
-
     }
     const handleEdit = (
         _id: string,
@@ -143,7 +129,7 @@ const UpdatingProducts = () => {
                 slug,
                 image,
                 description,
-                category,
+                category: category ? category._id : '',
                 quantity,
                 sold,
                 shipping,
@@ -163,6 +149,7 @@ const UpdatingProducts = () => {
             })
         }
     }
+
 
 
     return (

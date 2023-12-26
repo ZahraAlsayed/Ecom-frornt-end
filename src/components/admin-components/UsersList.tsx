@@ -19,7 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import BlockIcon from '@mui/icons-material/Block';
 
 import { AppDispatch, RootState } from '../../redux/store';
-import { baneUser, deleteUser, fechUsers, unbaneUser } from '../../redux/slices/userslices/userSlice'
+import { baneUser, deleteUser, fechUsers, roleUser, unbaneUser } from '../../redux/slices/userslices/userSlice'
 
 
 import '../../style/admin.css'
@@ -65,7 +65,15 @@ const UserList = () => {
                 autoClose: 3000, // Duration in milliseconds
             });
         }
-    };
+    }
+    const handelUserRoleFunction = async (id: string) => {
+        try {
+            dispatch(roleUser(id))
+            toast.success('successfully changed role')
+        } catch (error) {
+            toast.error('Error updating role')
+        }
+    }
 
 
     if (isLoading) {
@@ -131,6 +139,12 @@ const UserList = () => {
                                                     }}>
                                                     {user.isBanned ? 'unban' : 'ban'}
                                                     <BlockIcon sx={{ fontSize: 15, color: '#EC2A2A' }} />
+                                                </IconButton>
+                                                <IconButton aria-label="ban"
+                                                    onClick={() => {
+                                                        handelUserRoleFunction(user._id);
+                                                    }}>
+                                                    give Admin privilege
                                                 </IconButton>
                                             </TableCell>
 

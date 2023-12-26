@@ -147,9 +147,9 @@ const Login = () => {
                 autoClose={3000} hideProgressBar={false}
                 newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <img
-                src="..\src\assets\logo-techtrove.png"
+                src="https://res.cloudinary.com/dc9snu7rk/image/upload/v1703446913/l4jfqz1qr7l7pizru9r4.png"
                 alt="Logo"
-                width={170}
+                width={110}
             />
             <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>

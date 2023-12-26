@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
 
-import { fechUsers, login } from '../redux/slices/userslices/userSlice';
+import { User, fechUsers, login } from '../redux/slices/userslices/userSlice';
 import '../style/register.css'
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -14,10 +14,29 @@ const Login = () => {
     const state = useSelector((state: RootState) => state)
     const users = state.users
 
+
     useEffect(() => {
         dispatch(fechUsers())
     }, [])
-    
+
+    // const userRole = () => {
+    //     console.log(users.userData)
+    //     if (users.isLoggedIn && users.userData?.isAdmin) {
+    //         navigate('/dashboard/admin')
+
+    //     } else {
+    //         navigate('/')
+    //    }
+    // }
+    // const userRole=() => {
+    //     const storedUserData = localStorage.getItem('loginData');
+    //     console.log(storedUserData)
+    //     if (storedUserData) {
+    //         const parsedUserData: User = JSON.parse(storedUserData);
+    //         setUserData(parsedUserData);
+    //     }
+    // }
+
     const navigate = useNavigate()
     const [user, setUser] = useState({
         email: '',
@@ -28,7 +47,7 @@ const Login = () => {
         email: '',
         password: '',
     })
-   
+
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
         setUser((prevState) => {
@@ -58,43 +77,47 @@ const Login = () => {
         // Return true if there are no errors, indicating the form is valid
         return !Object.values(newErrors).some((error) => !!error);
     }
-    const handleSubmit =(event: FormEvent) => {
+    const handleSubmit = (event: FormEvent) => {
         event.preventDefault()
-        
-
-        try {
-            // const loginInfo = {
-            //     email: user.email,
-            //     password: user.password
-            // }
-            if (!validateForm()) {
-                return; // If the form is not valid, do not submit.
-            }
-            console.log(users.userData?.isAdmin)
+        const foundUser = users.items.find(
+            (userData) => userData.email.toLocaleLowerCase() === user.email.toLocaleLowerCase()
+        )
+        if (!validateForm()) {
+            return; // If the form is not valid, do not submit.
+        }
+        console.log(foundUser)
+        if (foundUser && foundUser.email === user.email) {
             dispatch(login(user))
-            if (users.userData?.isAdmin) {
-                    navigate('/dashboard/admin')
-            //     } else if (!users.userData?.isAdmin){
-            //         navigate('/')
-            // } else {
-            // toast.error('Invalid email or password')
-        }
-            // const foundUser = users.userData?.isAdmin 
-            // console.log(users.userData)
-            // console.log(foundUser)
-            // if (users.userData?.isAdmin === true) {
-            //         navigate('/dashboard/admin')
-            //     }
-            // else {
-            //         navigate('/')
-            //     }
-            // toast.success(`Wellcome ${users.userData?.name}`); // Success toast
+            if (foundUser.isAdmin) {
+                navigate('/dashboard/admin')
+            } else {
+                navigate('/')
+            }
+            toast.success(`${foundUser.name} you are loggin now`)
+        }else {
+        toast.error('Invalid email or password')
+    }
+        //     if (users.isLoggedIn && users.userData?.isAdmin) {
+        //             navigate('/dashboard/admin')
+        // } else {
+        //     navigate('/')
+        // }
+        //     
+        // }
+        //     // const foundUser = users.userData?.isAdmin 
+        // console.log(users.userData)
+        // console.log(foundUser)
+        // if (users.userData?.isAdmin === true) {
+        //         navigate('/dashboard/admin')
+        //     }
+        // else {
+        //         navigate('/')
+        //     }
+        // toast.success(`Wellcome ${users.userData?.name}`); // Success toast
 
-            
-        } catch (error) {
-            console.log(error)
-        }
-       
+
+
+
         // if (!validateForm()) {
         //     return; // If the form is not valid, do not submit.
         // }

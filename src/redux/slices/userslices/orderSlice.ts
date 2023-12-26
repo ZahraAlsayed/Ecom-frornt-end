@@ -1,12 +1,14 @@
 /* eslint-disable prettier/prettier */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import api from '../../../api'
+import { Product } from '../products/productSlice'
+import { User } from './userSlice'
 
 export type Order = {
-    id: number,
-    productId: number,
-    userId: number,
-    purchasedAt: string
+   _id: string
+  products: Product
+  payment: string
+  user: User
 }
 
 export type OrderState = {
@@ -22,9 +24,15 @@ const initialState: OrderState = {
   isLoading: false,
 
 }
-export const fechOrders = createAsyncThunk('items/fechOrders', async () => {
-    const res = await api.get('/mock/e-commerce/orders.json')
+export const fechOrdersForAdmin = createAsyncThunk('items/fechOrdersForAdmin', async () => {
+    const res = await api.get('/orders/all-orders')
+    console.log(res.data)
     return res.data
+})
+
+export const deleteOrder = createAsyncThunk('orders/deleteOrder', async (id: string) => {
+  await api.delete(`/orders/${id}`)
+  return id
 })
 export const orderSlice = createSlice({
     name: 'order',
@@ -33,18 +41,25 @@ export const orderSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fechOrders.pending, (state) => {
-                state.isLoading = true
-                state.error = null
-            })
-            .addCase(fechOrders.fulfilled, (state, action) => {
+            .addCase(fechOrdersForAdmin.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.error = null
-                state.items = action.payload
+                console.log(action.payload.payload.orders)
+                state.items = action.payload.payload.orders
             })
-            .addCase(fechOrders.rejected, (state, action) => {
-                state.isLoading = false
-                state.error = action.error.message || "There is something wrong "
+        .addCase(deleteOrder.fulfilled, (state, action) => {
+         state.items = state.items.filter((order) => order._id !== action.payload)
+         state.isLoading = false
+        })
+        builder.addMatcher((action) => action.type.endsWith('/pending'),
+        (state) => {
+          state.isLoading = true
+          state.error = null
+        })
+      builder.addMatcher((action) => action.type.endsWith('/rejected'),
+        (state,action) => {
+          state.isLoading = false
+          state.error = action.payload || "There is something wrong "
             })
     }
 })

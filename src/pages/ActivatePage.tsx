@@ -33,12 +33,25 @@ const ActivatePage = () => {
 
     return (
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'white' }}>
-            <ToastContainer position="top-right"
+        <div >
+            <div className="center">
+                <img
+                    src='https://res.cloudinary.com/dc9snu7rk/image/upload/v1703446913/l4jfqz1qr7l7pizru9r4.png'
+                    alt="Logo"
+                    width={190}
+                />
+                <h1>Activate Account</h1>
+                 <ToastContainer position="top-right"
                 autoClose={3000} hideProgressBar={false}
-                newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-            <h1>Wlkcome back, {decoded.name}</h1>
-            <button onClick={handelActivate} type='submit' value="activate">Activate Acount </button>
+                    newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+                <img
+                    src='https://res.cloudinary.com/dc9snu7rk/image/upload/v1703446818/mhtp6yowrohc90zbptbj.png'
+                    alt="Logo"
+                    width={290}
+                />
+                <h2>welcome back, {decoded.name}</h2>
+                <button onClick={handelActivate} type='submit' value="activate">Activate your Account </button>
+            </div>
         </div>
 
     )
