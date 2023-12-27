@@ -21,9 +21,16 @@ import Person2Icon from '@mui/icons-material/Person2'
 import LogoutIcon from '@mui/icons-material/Logout'
 
 import '../../style/admin.css'
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { logout } from '../../redux/slices/userslices/userSlice';
 
 const AdminSidebar = () => {
     const [open, setOpen] = useState(false);
+    const dispatch = useDispatch<AppDispatch>()
+    const handelLogout = () => {
+        dispatch(logout())
+    }
 
     const toggleSidebar = () => {
         setOpen(!open);
@@ -82,7 +89,7 @@ const AdminSidebar = () => {
                         Mange Orders
                     </ListItem>
                 </Link>
-                <Link className='text' to='/dashboard/admin/profile'>
+                <Link className='text' to='/dashboard/admin/' onClick={handelLogout}>
                 <ListItem button>
                     <ListItemIcon>
                         <Person2Icon color="action" />

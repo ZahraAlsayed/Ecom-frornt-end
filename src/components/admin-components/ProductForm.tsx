@@ -1,25 +1,16 @@
-/* eslint-disable prettier/prettier */
-import { useState, ChangeEvent, FormEvent, useEffect, } from 'react'
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addProduct, createProduct, fetchProducts, Product, updateProduct } from '../../redux/slices/products/productSlice'
+import {
+  createProduct,
+  fetchProducts,
+  updateProduct
+} from '../../redux/slices/products/productSlice'
 import { AppDispatch, RootState } from '../../redux/store'
 
 import '../../style/register.css'
 import '../../style/table.css'
-import { toast } from 'react-toastify'
-// type ProductFormProps = {
-//   product: Product
-//   handleSubmit: (e: FormEvent) => void
-//   handleChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
-// }
-// const initialProductState: Partial<Product> = {
-//   _id: '',
-//   title: '',
-//   image: '',
-//   description: '',
-//   category: [],
-//   price: 0
-// }
+import { ToastContainer, toast } from 'react-toastify'
+
 export function ProductForm() {
   const dispatch = useDispatch<AppDispatch>()
   const { items, isLoading, error } = useSelector((state: RootState) => state.products)
@@ -36,11 +27,55 @@ export function ProductForm() {
     shipping: 0,
     price: 0
   })
+  const [productError, setProductError] = useState({
+    title: '',
+    slug: '',
+    image: '',
+    description: '',
+    category: '',
+    quantity: '',
+    sold: '',
+    shipping: '',
+    price: ''
+  })
   //const [editForm, setEditForm] = useState(false)
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts())
   }, [dispatch])
+  const validateForm = () => {
+    const newErrors = { ...productError }
 
+    if (!product.title || product.title.length < 2) {
+      newErrors.title = 'Plase Enter valid Name'
+    } else {
+      newErrors.title = ''
+    }
+    if (!product.category) {
+      newErrors.category = 'categiry ID required'
+    } else {
+      newErrors.category = ''
+    }
+    if (!product.description || product.description.length < 6) {
+      newErrors.description = 'The description must be more than one word'
+    } else {
+      newErrors.description = ''
+    }
+    if (!product.price) {
+      newErrors.price = 'Plase product price'
+    } else {
+      newErrors.price = ''
+    }
+    if (!product.image) {
+      newErrors.image = 'Plase Enteronly images'
+    } else {
+      newErrors.image = ''
+    }
+
+    setProductError(newErrors)
+
+    // Return true if there are no errors, indicating the form is valid
+    return !Object.values(newErrors).some((error) => !!error)
+  }
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -56,13 +91,6 @@ export function ProductForm() {
     }
   }
 
-  // const handleEditItem = (id: string) => {
-  //   const editedProduct = products.items.find((product) => product._id == id)
-  //   if (editedProduct) {
-  //     console.log(editedProduct)
-  //     setProduct({ ...editedProduct, _id: editedProduct._id })
-  //   }
-  // }
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (!productEdit) {
@@ -75,9 +103,12 @@ export function ProductForm() {
       formData.append('quantity', product.quantity.toString())
       formData.append('sold', product.sold.toString())
       formData.append('shipping', product.shipping.toString())
+      if (!validateForm()) {
+        return // If the form is not valid, do not submit.
+      }
 
       dispatch(createProduct(formData))
-      toast.success('Successful Add Product')
+      toast.success(`Successful Add  ${product.title}`)
       setProduct({
         title: '',
         slug: '',
@@ -103,10 +134,8 @@ export function ProductForm() {
         price: product.price
       }
       dispatch(updateProduct(updateProducts))
-      toast.success('Successful Update Product')
+      toast.success('Successful Updating Product')
     }
-  
-
   }
   const handleEdit = (
     _id: string,
@@ -149,106 +178,97 @@ export function ProductForm() {
     }
   }
 
-    return (
+  return (
+    <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
 
-      <div >
-
-        <form onSubmit={handleSubmit} >
-          <div className="txtfield">
-            <label htmlFor="title"  >
-              Name:
-            </label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              value={product.title}
-              onChange={handleChange}
-              required
-
-            />
-          </div>
-          <div className="txtfield">
-            <label htmlFor="image" >
-              Image
-            </label>
-            <input
-              type="file"
-              name="image"
-              id="image"
-              accept='imafe/*'
-              onChange={handleChange}
-
-            />
-          </div>
-          <div className="txtfield">
-            <label htmlFor="description" >
-              Description:
-            </label>
-            <textarea
-              name="description"
-              id="description"
-              value={product.description}
-              onChange={handleChange}
-              required
-
-            />
-          </div>
-          <div className="txtfield">
-            <label htmlFor="category" >
-              Category
-            </label>
-            <input
-              type="text"
-              name="category"
-              id="category"
-              value={product.category}
-              onChange={handleChange}
-
-            />
-          </div>
-          <div className="txtfield">
-            <label htmlFor="price" >
-              Price:
-            </label>
-            <input
-              type="numper"
-              name="price"
-              id="price"
-              value={product.price}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="txtfield">
-            <label htmlFor="sizes" >
-              Quantity
-            </label>
-            <input
-              type="number"
-              name="quantity"
-              id="quantity"
-              value={product.quantity}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="txtfield">
-            <label htmlFor="sizes" >
-              Sold Item
-            </label>
-            <input
-              type="number"
-              name="slod"
-              id="slod"
-              value={product.sold}
-              onChange={handleChange}
-            />
-          </div>
-          <button
-            type="submit">
-            Add Product
-          </button>
-        </form>
-      </div>
-
-    )
-  }
+      <form onSubmit={handleSubmit}>
+        <div className="txtfield">
+          <label htmlFor="title">Name:</label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            value={product.title}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <span className="error-message">{productError.title}</span>
+        </div>
+        <div className="txtfield">
+          <label htmlFor="image">Image</label>
+          <input type="file" name="image" id="image" accept="image/*" onChange={handleChange} />
+        </div>
+        <div>
+          <span className="error-message">{productError.image}</span>
+        </div>
+        <div className="txtfield">
+          <label htmlFor="description">Description:</label>
+          <textarea
+            name="description"
+            id="description"
+            value={product.description}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <span className="error-message">{productError.description}</span>
+        </div>
+        <div className="txtfield">
+          <label htmlFor="category">Category</label>
+          <input
+            type="text"
+            name="category"
+            id="category"
+            value={product.category}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <span className="error-message">{productError.category}</span>
+        </div>
+        <div className="txtfield">
+          <label htmlFor="price">Price:</label>
+          <input
+            type="numper"
+            name="price"
+            id="price"
+            value={product.price}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <span className="error-message">{productError.price}</span>
+        </div>
+        <div className="txtfield">
+          <label htmlFor="sizes">Quantity</label>
+          <input
+            type="number"
+            name="quantity"
+            id="quantity"
+            value={product.quantity}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="txtfield">
+          <label htmlFor="sizes">Sold Item</label>
+          <input type="number" name="slod" id="slod" value={product.sold} onChange={handleChange} />
+        </div>
+        <button type="submit">Add Product</button>
+      </form>
+    </div>
+  )
+}

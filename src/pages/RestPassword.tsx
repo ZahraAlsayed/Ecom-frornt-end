@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../redux/store'
-import { forgetPassword, restPassword } from '../redux/slices/userslices/userSlice'
+import { forgetPassword, resetPassword } from '../redux/slices/userslices/userSlice'
 
 
 const RestPassword = () => {
@@ -20,23 +20,7 @@ const RestPassword = () => {
 
     const { token } = useParams()
     const decoded = jwtDecode(String(token))
-    console.log(decoded)
-    //    const handelActivate = async () => {
-    //     try {
-    //         const response = await rese(String(token))
-    //         toast.success(`${response.message}`, {
-    //             position: "top-right",
-    //             autoClose: 3000, // Duration in milliseconds
-    //         });
-    //         navigate('/login')
-    //     } catch (error) {
-
-    //         toast.error("error.response.data.massage", {
-    //             position: "top-right",
-    //             autoClose: 3000, // Duration in milliseconds
-    //         });
-    //     }
-    // }
+   
 
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -51,9 +35,8 @@ const RestPassword = () => {
             newError = ''
         }
         setpasswordError(newError)
-        dispatch(restPassword({ password, token }))
+        dispatch(resetPassword({ password, token }))
         toast.success('password updated successfully')
-        console.log('password updated successfully')
         navigate('/login')
     }
 
@@ -65,10 +48,16 @@ const RestPassword = () => {
                 alt="Logo"
                 width={190}
             />
-            <h1>Rest Password</h1>
+            <h1>Reset Password</h1>
+            
             <ToastContainer position="top-right"
                 autoClose={3000} hideProgressBar={false}
                 newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <img
+                src='https://res.cloudinary.com/dc9snu7rk/image/upload/v1703638611/x7eqxhupmuwuiv57es9e.png'
+                alt="Logo"
+                width={290}
+            />
             <form onSubmit={handleSubmit}>
                 <div className="txtfield">
                     <input
@@ -79,12 +68,12 @@ const RestPassword = () => {
                         onChange={handleInputChange}
                         required />
                     <span></span>
-                    <label htmlFor="password" >password</label>
+                    <label htmlFor="password" >New password</label>
                     <div>
                         <span className="error-message">{passwordError}</span>
                     </div>
                 </div>
-                <button type="submit" value="Login" >Rest</button>
+                <button type="submit" value="Login" >Reset</button>
                 <div className="signup_link">
                     Not register? <Link to='/singup'>Signup</Link>
                 </div>
