@@ -62,8 +62,6 @@ const Login = () => {
     const foundUser = users.items.find(
       (userData) => userData.email.toLocaleLowerCase() === user.email.toLocaleLowerCase()
     )
-    console.log(users.items)
-
     if (!validateForm()) {
       return // If the form is not valid, do not submit.
     }

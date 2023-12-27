@@ -58,11 +58,9 @@ const Home = () => {
       })
     )
   }
-  console.log(checkedCategories)
   useEffect(() => {
     filterAllProducts()
   }, [dispatch, currentPage, itemsPerPage, checkedCategories])
-
   useEffect(() => {
     dispatch(fechCategories())
   }, [dispatch])
